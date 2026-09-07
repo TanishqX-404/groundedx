@@ -1,0 +1,2 @@
+id,gold,prediction,mode,latency_ms,vram_gb_before,vram_gb_after,power_w_before,power_w_after,joules_proxy
+win-00523,DNS_RESOLUTION_FAILURE,DNS_RESOLUTION_FAILURE,llama_cpp_rag,29428.318699938245,1.1382827758789062,1.1258926391601562,10.467,10.714,311.660609191696

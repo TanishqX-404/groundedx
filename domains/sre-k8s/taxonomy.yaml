@@ -1,0 +1,39 @@
+name: sre-k8s
+taxonomy:
+  - class: POD_CRASH_LOOP
+    domain: Kubernetes
+    alarms: [K8S-POD-CRASHLOOP, K8S-CONTAINER-RESTARTS]
+    kpi_effects: {restart_rate: 8, request_error_rate_pct: 12}
+    pattern: spike
+    remediation: Inspect the container exit reason, rollback the image if needed, and restore readiness.
+  - class: MEMORY_LEAK
+    domain: Kubernetes
+    alarms: [K8S-MEMORY-PRESSURE, K8S-OOMKILL]
+    kpi_effects: {memory_util_pct: 30, pod_evictions: 2}
+    pattern: ramp
+    remediation: Identify the leaking workload, cap memory, and roll out a fixed build.
+  - class: DNS_RESOLUTION_FAILURE
+    domain: Kubernetes
+    alarms: [K8S-DNS-ERROR, K8S-SERVICE-DISCOVERY]
+    kpi_effects: {dns_error_rate_pct: 18, request_latency_ms: 120}
+    pattern: step
+    remediation: Check CoreDNS health and service records, then restore cluster DNS reachability.
+  - class: CPU_CONTENTION
+    domain: Kubernetes
+    alarms: [K8S-CPU-THROTTLING, K8S-NODE-SATURATION]
+    kpi_effects: {cpu_throttle_pct: 35, request_latency_ms: 80}
+    pattern: ramp
+    remediation: Identify the noisy neighbor, adjust requests and limits, or move the workload.
+  - class: DISK_PRESSURE
+    domain: Kubernetes
+    alarms: [K8S-DISK-PRESSURE, K8S-EPHEMERAL-SPACE]
+    kpi_effects: {disk_util_pct: 25, pod_evictions: 3}
+    pattern: ramp
+    remediation: Remove stale data, expand storage, and restore node disk headroom.
+  - class: NETWORK_PARTITION
+    domain: Kubernetes
+    alarms: [K8S-NETWORK-UNREACHABLE, K8S-NODE-NOTREADY]
+    kpi_effects: {packet_loss_pct: 35, request_error_rate_pct: 20}
+    pattern: spike
+    remediation: Check node and CNI connectivity, isolate the failed segment, and restore routes.
+

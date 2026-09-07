@@ -1,0 +1,4 @@
+method,top1_acc,top3_acc,macro_f1,explanation_faithfulness,latency_ms,vram_gb
+Rule-based expert system,0.5616666666666666,,0.5548488829813116,,,
+RandomForest structured features,0.855,,0.8544110350412273,,,
+RAG SLM qwen2.5-1.5b-instruct-q4_k_m.gguf,1.0,,1.0,1.0,29847.886299947277,

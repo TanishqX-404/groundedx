@@ -1,0 +1,27 @@
+name: oran
+metrics:
+  - {name: prb_util_pct, baseline: 55.0, unit: percent}
+  - {name: rsrp_dbm, baseline: -88.0, unit: dBm}
+  - {name: rsrq_db, baseline: -10.0, unit: dB}
+  - {name: sinr_db, baseline: 18.0, unit: dB}
+  - {name: throughput_mbps, baseline: 95.0, unit: Mbps}
+  - {name: latency_ms, baseline: 24.0, unit: ms}
+  - {name: packet_loss_pct, baseline: 0.2, unit: percent}
+  - {name: handover_failure_rate, baseline: 0.025, unit: ratio}
+  - {name: drop_call_rate, baseline: 0.01, unit: ratio}
+  - {name: cpu_util_pct, baseline: 45.0, unit: percent}
+  - {name: setup_success_rate, baseline: 0.975, unit: ratio}
+  - {name: ping_pong_rate, baseline: 0.015, unit: ratio}
+  - {name: availability_pct, baseline: 99.8, unit: percent}
+# Paper benchmark settings: 50% own-alarm emission, 82% extra-alarm
+# emission, and 78% cross-class KPI blending.
+distractor_probability: 0.78
+true_alarm_probability: 0.50
+extra_alarm_probability: 0.82
+log_templates:
+  - mobility counters changed after recent window onset
+  - transport delay variation observed on monitored path
+  - radio quality indicators deviated from rolling baseline
+  - service setup counters below expected range
+  - resource utilization shifted from normal operating band
+max_log_lines: 4

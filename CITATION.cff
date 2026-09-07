@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the manuscript."
+title: "RAN-Doc: Retrieval-Augmented Small Language Models for Edge-Deployable Fault Diagnosis in AI-Native O-RAN"
+type: software
+version: "0.1.0"
+date-released: 2026-09-07
+license: MIT
+authors:
+  - family-names: "Sisodiya"
+    given-names: "Tanishq Singh"
+    affiliation: "Symbiosis Institute of Technology, Hyderabad Campus, Symbiosis International (Deemed University), Pune, India"
+  - family-names: "Agrawal"
+    given-names: "Samarth"
+    affiliation: "Symbiosis Institute of Technology, Hyderabad Campus, Symbiosis International (Deemed University), Pune, India"
+  - family-names: "Prashanth"
+    given-names: "Mallellu Sai"
+    affiliation: "Symbiosis Institute of Technology, Hyderabad Campus, Symbiosis International (Deemed University), Pune, India"
+  - family-names: "Aluvalu"
+    given-names: "Rajanikanth"
+    affiliation: "Symbiosis Institute of Technology, Hyderabad Campus, Symbiosis International (Deemed University), Pune, India"
+abstract: "Domain-configured retrieval-grounded diagnosis from telemetry, alerts, and logs."
+note: "Manuscript under review at IEEE GLOBECOM 2026; no DOI or page numbers are claimed."

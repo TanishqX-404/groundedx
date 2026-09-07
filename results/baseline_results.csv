@@ -1,0 +1,3 @@
+method,top1_acc,top3_acc,macro_f1
+Rule-based expert system,0.5616666666666666,,0.5548488829813116
+RandomForest structured features,0.855,,0.8544110350412273

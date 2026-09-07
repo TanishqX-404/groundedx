@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "groundedx"
+version = "0.1.0"
+description = "Small, retrieval-grounded diagnosis from telemetry, alerts, and logs."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "RAN-Doc authors"}]
+dependencies = [
+  "numpy>=1.26,<3",
+  "pandas>=2.2,<3",
+  "scikit-learn>=1.4,<2",
+  "PyYAML>=6.0,<7",
+  "Jinja2>=3.1,<4",
+  "pydantic>=2.6,<3",
+]
+
+[project.optional-dependencies]
+llama = ["llama-cpp-python>=0.2.90,<1"]
+profiling = ["pynvml>=11.5,<13"]
+dev = ["pytest>=8,<9", "ruff>=0.6,<1", "black>=24,<26"]
+
+[project.scripts]
+groundedx = "groundedx.pipeline:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+pythonpath = ["src"]

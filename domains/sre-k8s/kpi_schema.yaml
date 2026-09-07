@@ -1,0 +1,22 @@
+name: sre-k8s
+metrics:
+  - {name: request_latency_ms, baseline: 40.0, unit: ms}
+  - {name: request_error_rate_pct, baseline: 0.5, unit: percent}
+  - {name: restart_rate, baseline: 0.1, unit: per-minute}
+  - {name: memory_util_pct, baseline: 55.0, unit: percent}
+  - {name: pod_evictions, baseline: 0.0, unit: count}
+  - {name: dns_error_rate_pct, baseline: 0.1, unit: percent}
+  - {name: cpu_throttle_pct, baseline: 3.0, unit: percent}
+  - {name: disk_util_pct, baseline: 60.0, unit: percent}
+  - {name: packet_loss_pct, baseline: 0.1, unit: percent}
+distractor_probability: 0.55
+true_alarm_probability: 0.45
+extra_alarm_probability: 0.75
+log_templates:
+  - deployment health changed after a recent rollout
+  - service latency moved outside the normal operating band
+  - node resource pressure observed by the kubelet
+  - request failures increased on the monitored service
+  - control-plane or service-discovery behavior deviated
+max_log_lines: 4
+
