@@ -19,7 +19,4 @@ uses TF-IDF retrieval, while latency/VRAM/power profiling is a single 25-call
 pass per configuration; six of eight sweep accuracy values are estimates from
 that smaller harness rather than full-test evaluation.
 
-The released generated dataset is intentionally not committed here. Zenodo
-placeholder: `https://doi.org/10.5281/zenodo/DOI-TO-BE-ASSIGNED`.
-After Zenodo-GitHub integration is enabled, a tag such as `data-v1.0.0` will
-archive the generated benchmark as a citable release asset.
+Zenodo: ` https://doi.org/10.5281/zenodo.22649023`.
