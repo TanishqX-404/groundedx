@@ -7,8 +7,6 @@ and retrieved citation IDs. The core is domain-configured so the same pipeline
 can support AIOps/SRE, industrial telemetry, security alerts, and the included
 O-RAN reference benchmark.
 
-> This repository accompanies a paper currently under review at IEEE GLOBECOM 2026. Results and code may be revised before publication.
-
 O-RAN is the flagship reference domain; `domains/sre-k8s/` is a smaller worked
 example showing that the core does not import or assume O-RAN data.
 
