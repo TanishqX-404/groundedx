@@ -76,19 +76,6 @@ current implementation uses TF-IDF retrieval; embedding retrieval, real-world
 testbed validation, multi-seed profiling, and additional domains remain future
 work. See [`data/README.md`](data/README.md).
 
-## Citation
-
-The manuscript is currently in review; no venue DOI or page numbers are claimed.
-The author list below matches the supplied manuscript.
-
-```bibtex
-@unpublished{ran_doc_2026,
-  author = {Tanishq Singh Sisodiya and Samarth Agrawal and Mallellu Sai Prashanth and Rajanikanth Aluvalu},
-  title  = {RAN-Doc: Retrieval-Augmented Small Language Models for Edge-Deployable Fault Diagnosis in AI-Native O-RAN},
-  note   = {Manuscript under review at IEEE GLOBECOM 2026},
-  year   = {2026}
-}
-```
 
 ## License
 
