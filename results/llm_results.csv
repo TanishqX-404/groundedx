@@ -1,2 +1,0 @@
-method,top1_acc,top3_acc,macro_f1,explanation_faithfulness,latency_ms,vram_gb
-RAG SLM qwen2.5-1.5b-instruct-q4_k_m.gguf,1.0,,1.0,1.0,29847.886299947277,

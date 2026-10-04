@@ -11,6 +11,7 @@ requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [{name = "RAN-Doc authors"}]
 dependencies = [
+  "xgboost>=2,<4",
   "numpy>=1.26,<3",
   "pandas>=2.2,<3",
   "scikit-learn>=1.4,<2",
@@ -21,7 +22,7 @@ dependencies = [
 
 [project.optional-dependencies]
 llama = ["llama-cpp-python>=0.2.90,<1"]
-profiling = ["pynvml>=11.5,<13"]
+profiling = ["nvidia-ml-py>=12"]
 dev = ["pytest>=8,<9", "ruff>=0.6,<1", "black>=24,<26"]
 
 [project.scripts]
@@ -34,7 +35,14 @@ where = ["src"]
 line-length = 100
 target-version = "py310"
 
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
 pythonpath = ["src"]
+
+[tool.ruff.lint.per-file-ignores]
+# Markdown table rows are clearer on one line.
+"scripts/make_results.py" = ["E501"]

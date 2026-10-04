@@ -1,0 +1,75 @@
+{
+  "train": {
+    "n": 2800,
+    "blended": 2219,
+    "true_alarm_emitted": 1367,
+    "with_distractor_alarm": 2282,
+    "per_class": {
+      "PCI_COLLISION": 181,
+      "BACKHAUL_CONGESTION": 170,
+      "HARDWARE_DEGRADATION": 177,
+      "INTERFERENCE_SPIKE": 175,
+      "NEIGHBOR_LIST_MISCONFIG": 175,
+      "VNF_CPU_EXHAUSTION": 170,
+      "HANDOVER_PARAM_MISCONFIG": 189,
+      "POWER_AMPLIFIER_FAULT": 166,
+      "TIMING_SYNC_LOSS": 161,
+      "OVERLOAD_ADMISSION_CONTROL": 181,
+      "S1_NG_INTERFACE_FLAP": 169,
+      "DNS_RESOLUTION_FAILURE": 177,
+      "SLICE_QOS_POLICY_ERROR": 187,
+      "FRONTHAUL_JITTER": 166,
+      "CONFIG_ROLLBACK_REQUIRED": 179,
+      "COOLING_SYSTEM_FAILURE": 177
+    }
+  },
+  "val": {
+    "n": 600,
+    "blended": 470,
+    "true_alarm_emitted": 287,
+    "with_distractor_alarm": 488,
+    "per_class": {
+      "PCI_COLLISION": 31,
+      "BACKHAUL_CONGESTION": 34,
+      "HARDWARE_DEGRADATION": 44,
+      "INTERFERENCE_SPIKE": 38,
+      "NEIGHBOR_LIST_MISCONFIG": 41,
+      "VNF_CPU_EXHAUSTION": 44,
+      "HANDOVER_PARAM_MISCONFIG": 27,
+      "POWER_AMPLIFIER_FAULT": 38,
+      "TIMING_SYNC_LOSS": 40,
+      "OVERLOAD_ADMISSION_CONTROL": 32,
+      "S1_NG_INTERFACE_FLAP": 40,
+      "DNS_RESOLUTION_FAILURE": 32,
+      "SLICE_QOS_POLICY_ERROR": 29,
+      "FRONTHAUL_JITTER": 46,
+      "CONFIG_ROLLBACK_REQUIRED": 34,
+      "COOLING_SYSTEM_FAILURE": 50
+    }
+  },
+  "test": {
+    "n": 600,
+    "blended": 468,
+    "true_alarm_emitted": 311,
+    "with_distractor_alarm": 482,
+    "per_class": {
+      "PCI_COLLISION": 38,
+      "BACKHAUL_CONGESTION": 46,
+      "HARDWARE_DEGRADATION": 29,
+      "INTERFERENCE_SPIKE": 37,
+      "NEIGHBOR_LIST_MISCONFIG": 34,
+      "VNF_CPU_EXHAUSTION": 36,
+      "HANDOVER_PARAM_MISCONFIG": 34,
+      "POWER_AMPLIFIER_FAULT": 46,
+      "TIMING_SYNC_LOSS": 49,
+      "OVERLOAD_ADMISSION_CONTROL": 37,
+      "S1_NG_INTERFACE_FLAP": 41,
+      "DNS_RESOLUTION_FAILURE": 41,
+      "SLICE_QOS_POLICY_ERROR": 34,
+      "FRONTHAUL_JITTER": 38,
+      "CONFIG_ROLLBACK_REQUIRED": 37,
+      "COOLING_SYSTEM_FAILURE": 23
+    }
+  },
+  "kb_docs": 128
+}

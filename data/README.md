@@ -5,18 +5,18 @@ and KPI schema. Each window contains metric rows, discrete alarm events, log
 lines, and an evaluator-only fault class. The default O-RAN generation command
 creates 4,000 windows with a 70/15/15 train/validation/test split.
 
-Faults are assigned approximately equally across the closed taxonomy. In the
-paper benchmark, true alarms fire with probability 0.50, an extra alarm is
-emitted with probability 0.82, and cross-class KPI effects are blended with
-probability 0.78. KPI effects use noisy step, ramp, or spike perturbations to
-avoid a one-signal lookup task. The KB builder must consume the observations
-without reading the scoring-label file.
+Faults are assigned equally across the closed taxonomy. Difficulty settings
+live in `domains/oran/kpi_schema.yaml`: the window-level probability that any
+of the class's own alarms fire, that an unrelated alarm is injected, and that a
+second class's KPI effects are blended in. Each window also records
+evaluator-only metadata (`secondary_class`, `blend_amplitude`,
+`true_alarm_emitted`, `distractor_alarms`) used by the analyses. Log lines
+describe the largest observed standardized KPI deviations. The KB builder never
+reads the scoring labels.
 
 Known limitations: data is synthetic, the taxonomy and historical-case cards
 are researcher-authored, the signal distributions are simplified, and results
-may not transfer to a live network or production Kubernetes cluster. The paper
-uses TF-IDF retrieval, while latency/VRAM/power profiling is a single 25-call
-pass per configuration; six of eight sweep accuracy values are estimates from
-that smaller harness rather than full-test evaluation.
+may not transfer to a live network or production Kubernetes cluster. The
+simulator's perturbation rules and the taxonomy share modelling assumptions.
 
 Zenodo: ` https://doi.org/10.5281/zenodo.22649023`.

@@ -31,7 +31,7 @@ def main() -> None:
     args = parser.parse_args()
     domain = load_domain_bundle(args.domain)
     rows = generate_dataset(domain, args.n, args.seed)
-    documents = build_documents(rows, domain, limit=32)
+    documents = build_documents(rows[:32], domain)
     result = diagnose(rows[0], args.domain, documents, args.k)
     print(
         json.dumps(

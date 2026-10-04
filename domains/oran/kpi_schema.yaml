@@ -13,8 +13,10 @@ metrics:
   - {name: setup_success_rate, baseline: 0.975, unit: ratio}
   - {name: ping_pong_rate, baseline: 0.015, unit: ratio}
   - {name: availability_pct, baseline: 99.8, unit: percent}
-# Paper benchmark settings: 50% own-alarm emission, 82% extra-alarm
-# emission, and 78% cross-class KPI blending.
+# Benchmark difficulty settings (window-level probabilities):
+#   true_alarm_probability  - the window emits >=1 of its own class's alarm codes
+#   extra_alarm_probability - one unrelated alarm code (from another class) is injected
+#   distractor_probability  - a second class's KPI effects are blended in
 distractor_probability: 0.78
 true_alarm_probability: 0.50
 extra_alarm_probability: 0.82
@@ -24,4 +26,5 @@ log_templates:
   - radio quality indicators deviated from rolling baseline
   - service setup counters below expected range
   - resource utilization shifted from normal operating band
+log_keywords: [latency, throughput, handover, sync, cpu, power, jitter, policy]
 max_log_lines: 4

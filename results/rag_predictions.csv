@@ -1,8 +1,0 @@
-id,gold,prediction,confidence,citations,citation_fault_match,latency_ms,raw_output
-win-00523,DNS_RESOLUTION_FAILURE,DNS_RESOLUTION_FAILURE,0.9,case_0048,True,29847.886299947277,"{
-  ""root_cause"": ""DNS_RESOLUTION_FAILURE"",
-  ""confidence"": 0.9,
-  ""remediation"": ""Restore DNS reachability and validate service discovery records."",
-  ""explanation"": ""The DNS resolution failure alarm indicates that the DNS resolution process is not functioning correctly. This can lead to issues with service discovery and connectivity. The operations team should restore DNS reachability and validate service discovery records to resolve this issue."",
-  ""citations"": [""case_0048""]
-}"

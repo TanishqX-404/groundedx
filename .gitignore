@@ -19,3 +19,5 @@ kb/scoring_labels.json
 results/generated/
 local*.yaml
 *.secret
+tools/
+results/v2/_logs/

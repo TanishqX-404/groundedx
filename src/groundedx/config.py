@@ -46,6 +46,7 @@ class DomainConfig(BaseModel):
     true_alarm_probability: float = 0.42
     extra_alarm_probability: float = 0.80
     log_templates: list[str] = []
+    log_keywords: list[str] = []
     max_log_lines: int = 4
     retrieval: dict[str, Any] = {}
 

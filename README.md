@@ -10,19 +10,28 @@ O-RAN reference benchmark.
 O-RAN is the flagship reference domain; `domains/sre-k8s/` is a smaller worked
 example showing that the core does not import or assume O-RAN data.
 
-## Paper-reported reference result
+## Results
 
-The following are the paper-reported values from the supplied manuscript, not
-an independent claim that the current legacy scripts reproduce them exactly.
-Reproduction details and known limitations are in
-[`docs/reproducing_paper_results.md`](docs/reproducing_paper_results.md).
+All results are regenerated from raw per-window outputs under `results/v2/`.
+The single source of truth is [`results/v2/RESULTS.md`](results/v2/RESULTS.md)
+(human-readable) and `results/v2/numbers.json` (every number, machine-readable),
+both written by `scripts/make_results.py`. No numbers are maintained by hand.
 
-| Method | Top-1 accuracy | Macro-F1 |
-| --- | ---: | ---: |
-| Rule-based expert system | 0.332 +/- 0.004 | 0.356 +/- 0.003 |
-| RandomForest structured features | 0.571 +/- 0.003 | 0.599 +/- 0.004 |
-| Zero-shot SLM, 3B Q4 | 0.520 +/- 0.003 | 0.480 +/- 0.004 |
-| RAG SLM, 3B Q4 | 0.700 +/- 0.003 | 0.670 +/- 0.004 |
+## Reproducing the experiments
+
+```bash
+pip install -e ".[dev,profiling]"
+pytest                                   # claims checks: docs/CLAIMS_CHECK.md
+python scripts/run_baselines.py          # rule, RandomForest, GBDT, kNN-vote, retrieval (CPU)
+# SLM runs need llama.cpp's llama-server (build b11398) and the GGUFs in configs/experiment.yaml
+LLAMA_SERVER_BIN=/path/to/llama-server python scripts/run_queue.py --phase accuracy --gpus 0 --models-dir models
+LLAMA_SERVER_BIN=/path/to/llama-server python scripts/run_queue.py --phase profile --gpus 0 --models-dir models --tag rtx3050
+python scripts/make_results.py
+```
+
+`notebooks/kaggle_revision_runs.ipynb` runs the GPU jobs on Kaggle (2x T4).
+A seed controls dataset generation, the 70/15/15 split, KB case sampling, and
+the tree baselines' `random_state`; decoding is greedy (temperature 0).
 
 ## Architecture
 
@@ -32,7 +41,7 @@ flowchart LR
   B --> C[TF-IDF retriever]
   D[Label-free historical cases] --> C
   C --> E[Prompt + GBNF grammar]
-  E --> F[Optional local llama.cpp model]
+  E --> F[Local llama.cpp model]
   F --> G[Strict diagnosis validation]
   G --> H[Root cause + remediation + citations]
   H --> I[Standalone grounding metric]
@@ -69,26 +78,9 @@ and Jinja prompt template. The step-by-step guide is in
 
 ## Data and limitations
 
-The benchmark is synthetic and the KB is researcher-authored. The checked-in
-prototype artifacts are useful for inspection, but the generated 4,000-window
-dataset should remain a release asset rather than source control content. The
-current implementation uses TF-IDF retrieval; embedding retrieval, real-world
-testbed validation, multi-seed profiling, and additional domains remain future
-work. See [`data/README.md`](data/README.md).
-
-## Citation
-
-The manuscript is currently in review; no venue DOI or page numbers are claimed.
-The author list below matches the supplied manuscript.
-
-```bibtex
-@unpublished{ran_doc_2026,
-  author = {Tanishq Singh Sisodiya and Samarth Agrawal and Mallellu Sai Prashanth and Rajanikanth Aluvalu},
-  title  = {RAN-Doc: Retrieval-Augmented Small Language Models for Edge-Deployable Fault Diagnosis in AI-Native O-RAN},
-  note   = {Manuscript under review at IEEE GLOBECOM 2026},
-  year   = {2026}
-}
-```
+The benchmark is synthetic and the KB is built from the simulator's own training
+windows. Results do not transfer to live networks without validation on real
+incidents. See [`data/README.md`](data/README.md).
 
 ## License
 
