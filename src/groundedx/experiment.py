@@ -71,7 +71,9 @@ def _git_commit() -> str | None:
         dirty = subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True)
         return sha + ("-dirty" if dirty.strip() else "")
     except Exception:
-        return None
+        # Code shipped as a `git archive` zip carries its commit in GIT_COMMIT.
+        stamp = ROOT / "GIT_COMMIT"
+        return stamp.read_text(encoding="utf-8").strip() if stamp.exists() else None
 
 
 def _gpu_info() -> dict[str, Any]:
