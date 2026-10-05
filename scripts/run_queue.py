@@ -129,7 +129,8 @@ def main() -> None:
             if deadline and time.time() > deadline:
                 print(f"[gpu{gpu}] deadline reached, not starting {name}", flush=True)
                 return
-            with (log_dir / f"{args.phase}_{name}.log").open("a", encoding="utf-8") as log:
+            log_path = log_dir / f"{args.phase}_{name}.log"
+            with log_path.open("a", encoding="utf-8") as log:
                 proc = subprocess.Popen(
                     cmd, env=env, stdout=log, stderr=subprocess.STDOUT, cwd=ROOT
                 )
@@ -145,6 +146,9 @@ def main() -> None:
                 f"[gpu{gpu}] end {name} code={code} {(time.time() - start) / 60:.1f} min",
                 flush=True,
             )
+            if code != 0:
+                tail = log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-30:]
+                print(f"[gpu{gpu}] FAILED {name}; last log lines:\n" + "\n".join(tail), flush=True)
 
     threads = [threading.Thread(target=worker, args=(g,)) for g in args.gpus]
     for t in threads:
