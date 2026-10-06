@@ -275,3 +275,54 @@ def test_knn_vote_weights_by_similarity():
     ]
     assert knn_vote(rows, labels) == "Y"
     assert knn_vote(rows[:2], labels) == "X"
+
+
+# ---- Hybrid (GBDT candidates + SLM) and fault-reference prompts --------------
+
+
+def test_hybrid_call_restricts_classes_to_classifier_top_n(setups):
+    from groundedx.calls import CallBuilder, CallSpec
+
+    setup = setups["full"]
+    samples = setup.splits["val"][:5]
+    builder = CallBuilder(setup, CallSpec("hybrid", k=5, candidates=3))
+    builder.precompute(samples)
+    for sample in samples:
+        call = builder.build(sample)
+        names = [name for name, _ in call["candidates"]]
+        probs = [p for _, p in call["candidates"]]
+        assert call["classes"] == names and len(names) == 3
+        assert probs == sorted(probs, reverse=True)
+        assert f"root_cause must be exactly one of: {', '.join(names)}." in call["prompt"]
+        cause_line = next(
+            line
+            for line in build_gbnf_grammar(call["classes"], call["citation_ids"]).splitlines()
+            if line.startswith("cause ::=")
+        )
+        assert re.findall(r'\\"([A-Z0-9_]+)\\"', cause_line) == names
+        assert len(call["citation_ids"]) == 5
+
+
+def test_docs_prompt_lists_reference_for_every_class(setups):
+    from groundedx.calls import CallBuilder, CallSpec, describe_fault
+
+    setup = setups["full"]
+    call = CallBuilder(setup, CallSpec("rag", k=5, class_docs=True)).build(setup.splits["test"][0])
+    for fault in DOMAIN.taxonomy:
+        assert f"- {fault.name}: {describe_fault(fault)}" in call["prompt"]
+    # the reference is taxonomy documentation only: identical for every window
+    other = CallBuilder(setup, CallSpec("zero-shot", class_docs=True)).build(
+        setup.splits["test"][1]
+    )
+    ref = call["prompt"].split("Fault reference:")[1].split("Retrieved evidence:")[0]
+    assert ref == other["prompt"].split("Fault reference:")[1].split("Retrieved evidence:")[0]
+
+
+def test_original_prompt_unchanged_by_call_builder(setups):
+    from groundedx.calls import CallBuilder, CallSpec
+
+    setup = setups["full"]
+    sample = setup.splits["test"][0]
+    query = encode_context(sample, DOMAIN)
+    expected = render_prompt(query, setup.retriever.retrieve(query, k=5), DOMAIN, TEMPLATE)
+    assert CallBuilder(setup, CallSpec("rag", k=5)).build(sample)["prompt"] == expected

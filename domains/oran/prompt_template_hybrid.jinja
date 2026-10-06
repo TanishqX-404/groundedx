@@ -1,0 +1,14 @@
+You are a grounded {{ domain.name }} telemetry fault diagnosis assistant.
+A feature-based classifier proposed the candidate root causes below for the observation window at the end of this message, with its probabilities. Choose the candidate best supported by the observation and the retrieved evidence, and explain your choice.
+Return exactly one JSON object with keys root_cause, confidence, remediation, explanation, citations.
+root_cause must be exactly one of: {{ taxonomy | join(', ') }}.
+{{ citation_rule }}
+
+Candidates:
+{{ reference }}
+
+Retrieved evidence:
+{{ evidence }}
+
+Observation window:
+{{ query }}

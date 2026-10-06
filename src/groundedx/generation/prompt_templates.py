@@ -35,14 +35,22 @@ def render_prompt(
     retrieved: list[dict[str, Any]],
     domain: DomainConfig,
     template_path: str | Path,
+    *,
+    taxonomy: list[str] | None = None,
+    reference: str = "",
 ) -> str:
-    """Render a prompt; an empty ``retrieved`` list gives the zero-shot prompt."""
+    """Render a prompt; an empty ``retrieved`` list gives the zero-shot prompt.
+
+    ``taxonomy`` restricts the listed classes (hybrid candidates); ``reference``
+    fills the optional fault-reference block of the docs/hybrid templates.
+    """
 
     template = Template(Path(template_path).read_text(encoding="utf-8"))
     return template.render(
         domain=domain,
-        taxonomy=domain.classes,
+        taxonomy=taxonomy if taxonomy is not None else domain.classes,
         query=query,
         evidence=render_evidence(retrieved) if retrieved else NO_EVIDENCE,
         citation_rule=RAG_CITATION_RULE if retrieved else ZERO_SHOT_CITATION_RULE,
+        reference=reference,
     )

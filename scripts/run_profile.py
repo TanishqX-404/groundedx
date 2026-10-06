@@ -20,7 +20,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from groundedx.encoding.context_encoder import encode_context  # noqa: E402
+from groundedx.calls import CallBuilder, CallSpec  # noqa: E402
 from groundedx.evaluation.run_profiling import NvmlPoller, require_model  # noqa: E402
 from groundedx.experiment import (  # noqa: E402
     ROOT,
@@ -29,7 +29,6 @@ from groundedx.experiment import (  # noqa: E402
     run_dir,
     write_manifest,
 )
-from groundedx.generation.prompt_templates import render_prompt  # noqa: E402
 
 
 def stratified_sample(samples: list[dict], n: int, seed: int) -> list[dict]:
@@ -53,7 +52,9 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", required=True)
     parser.add_argument("--model-path", required=True)
-    parser.add_argument("--mode", choices=["rag", "zero-shot"], required=True)
+    parser.add_argument("--mode", choices=["rag", "zero-shot", "hybrid"], required=True)
+    parser.add_argument("--class-docs", action="store_true")
+    parser.add_argument("--candidates", type=int, default=3)
     parser.add_argument("-k", type=int, default=5)
     parser.add_argument("--seeds", type=int, nargs="+", default=None)
     parser.add_argument("--n-gpu-layers", type=int, default=-1)
@@ -67,8 +68,10 @@ def main() -> None:
     prof = cfg["profiling"]
     seeds = args.seeds or cfg["seeds"]
     require_model(args.model_path)
-    template = ROOT / cfg["domain"] / "prompt_template.jinja"
-    mode_tag = "rag" if args.mode == "rag" else "zs"
+    spec = CallSpec(args.mode, args.k, args.class_docs, args.candidates)
+    mode_tag = {"rag": "rag", "zero-shot": "zs", "hybrid": f"hybrid{args.candidates}"}[args.mode]
+    if args.class_docs and args.mode != "hybrid":
+        mode_tag += "__docs"
     exp = f"profile__{args.model}__{mode_tag}" + (f"__{args.tag}" if args.tag else "")
 
     with NvmlPoller(hz=float(prof["nvml_poll_hz"]), device_index=args.nvml_index) as poller:
@@ -93,6 +96,7 @@ def main() -> None:
             measured = stratified_sample(test, int(prof["measured_calls"]), seed)
             measured_ids = {s["id"] for s in measured}
             warmup = [s for s in test if s["id"] not in measured_ids][: int(prof["warmup_calls"])]
+            builder = CallBuilder(setup, spec)
             out_dir = run_dir(exp, seed)
             write_manifest(
                 out_dir,
@@ -100,7 +104,9 @@ def main() -> None:
                 model_path=args.model_path,
                 model=args.model,
                 mode=args.mode,
-                k=args.k if args.mode == "rag" else 0,
+                k=args.k if spec.uses_retrieval else 0,
+                class_docs=args.class_docs,
+                candidates=args.candidates if args.mode == "hybrid" else None,
                 warmup_calls=len(warmup),
                 measured_calls=len(measured),
                 nvml_poll_hz=prof["nvml_poll_hz"],
@@ -113,14 +119,14 @@ def main() -> None:
             with (out_dir / "calls.jsonl").open("w", encoding="utf-8") as handle:
                 for phase, batch in (("warmup", warmup), ("measured", measured)):
                     for sample in batch:
-                        query = encode_context(sample, setup.domain)
-                        retrieved = (
-                            setup.retriever.retrieve(query, k=args.k) if args.mode == "rag" else []
-                        )
-                        prompt = render_prompt(query, retrieved, setup.domain, template)
-                        ids = [row["chunk_id"] for row in retrieved]
+                        # Hybrid: time single-window classifier inference (features +
+                        # GBDT) separately; end-to-end latency = classifier_ms + latency_ms.
+                        c0 = time.perf_counter()
+                        builder.precompute([sample])
+                        classifier_ms = (time.perf_counter() - c0) * 1000.0
+                        call = builder.build(sample)
                         t0 = time.perf_counter()
-                        out = client.diagnose(prompt, setup.domain.classes, ids)
+                        out = client.diagnose(call["prompt"], call["classes"], call["citation_ids"])
                         t1 = time.perf_counter()
                         time.sleep(0.05)  # let the poller record the tail of the call
                         stats = poller.window(t0, t1)
@@ -130,6 +136,9 @@ def main() -> None:
                                     "id": sample["id"],
                                     "phase": phase,
                                     "latency_ms": (t1 - t0) * 1000.0,
+                                    "classifier_ms": classifier_ms
+                                    if spec.mode == "hybrid"
+                                    else 0.0,
                                     "valid": out["valid"],
                                     "prompt_tokens": out["prompt_tokens"],
                                     "completion_tokens": out["completion_tokens"],

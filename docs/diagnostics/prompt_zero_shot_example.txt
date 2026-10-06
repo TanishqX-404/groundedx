@@ -1,0 +1,11 @@
+You are a grounded oran telemetry fault diagnosis assistant.
+Diagnose the root cause of the observation window at the end of this message.
+Return exactly one JSON object with keys root_cause, confidence, remediation, explanation, citations.
+root_cause must be exactly one of: PCI_COLLISION, BACKHAUL_CONGESTION, HARDWARE_DEGRADATION, INTERFERENCE_SPIKE, NEIGHBOR_LIST_MISCONFIG, VNF_CPU_EXHAUSTION, HANDOVER_PARAM_MISCONFIG, POWER_AMPLIFIER_FAULT, TIMING_SYNC_LOSS, OVERLOAD_ADMISSION_CONTROL, S1_NG_INTERFACE_FLAP, DNS_RESOLUTION_FAILURE, SLICE_QOS_POLICY_ERROR, FRONTHAUL_JITTER, CONFIG_ROLLBACK_REQUIRED, COOLING_SYSTEM_FAILURE.
+No evidence was retrieved, so citations must be an empty list.
+
+Retrieved evidence:
+(none)
+
+Observation window:
+Alarms: [ALM-ADMISSION-REJECT, ALM-TEMP-HIGH]. KPI anomalies: rsrp_dbm: delta -11.69, recent -94.17; latency_ms: delta +8.52, recent 31.81; throughput_mbps: delta -8.24, recent 81.64; cpu_util_pct: delta +6.99, recent 52.41; rsrq_db: delta -0.57, recent -10.37; setup_success_rate: delta -0.09, recent 0.89. Logs: radio quality indicators deviated from rolling baseline | latency_ms deviation observed with approximate delta +8.52 | handover_failure_rate deviation observed with approximate delta +0.05 | mobility counters changed after recent window onset.

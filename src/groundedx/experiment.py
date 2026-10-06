@@ -68,7 +68,9 @@ def run_dir(experiment: str, seed: int) -> Path:
 def _git_commit() -> str | None:
     try:
         sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
-        dirty = subprocess.check_output(["git", "status", "--porcelain", "--", ".", ":!results"], cwd=ROOT, text=True)
+        dirty = subprocess.check_output(
+            ["git", "status", "--porcelain", "--", ".", ":!results"], cwd=ROOT, text=True
+        )
         return sha + ("-dirty" if dirty.strip() else "")
     except Exception:
         # Code shipped as a `git archive` zip carries its commit in GIT_COMMIT.

@@ -1,0 +1,21 @@
+--- zero_shot
++++ rag
+@@ -5 +5 @@
+-No evidence was retrieved, so citations must be an empty list.
++Cite the IDs of the retrieved evidence you rely on; citations may only contain IDs listed under Retrieved evidence.
+@@ -8 +8,14 @@
+-(none)
++[case_0098] score=0.254
++Alarms: [ALM-ADMISSION-REJECT]. KPI anomalies: throughput_mbps: delta -17.51, recent 79.31; prb_util_pct: delta +7.72, recent 58.69; rsrp_dbm: delta -5.63, recent -87.40; cpu_util_pct: delta +2.52, recent 45.86; latency_ms: delta +2.24, recent 25.37; setup_success_rate: delta +0.05, recent 0.98. Logs: transport delay variation observed on monitored path | prb_util_pct deviation observed with approximate delta +7.72. Remediation applied by operations team: Roll back recent configuration change and perform controlled revalidation.
++
++[case_0043] score=0.245
++Alarms: [ALM-ADMISSION-REJECT, ALM-CONFIG-CHANGE]. KPI anomalies: throughput_mbps: delta +21.64, recent 97.90; availability_pct: delta +12.31, recent 108.15; cpu_util_pct: delta +9.86, recent 50.82; rsrp_dbm: delta -5.78, recent -94.21; latency_ms: delta +5.13, recent 27.04; sinr_db: delta -1.65, recent 18.23. Logs: cpu_util_pct deviation observed with approximate delta +9.86 | latency_ms deviation observed with approximate delta +5.13 | radio quality indicators deviated from rolling baseline | mobility counters changed after recent window onset. Remediation applied by operations team: Tune admission thresholds, add capacity, or offload users to neighbors.
++
++[case_0075] score=0.224
++Alarms: [ALM-ECPRI-DELAY]. KPI anomalies: latency_ms: delta +17.76, recent 39.46; rsrp_dbm: delta -13.22, recent -94.46; throughput_mbps: delta -11.69, recent 82.98; rsrq_db: delta +1.00, recent -9.31; packet_loss_pct: delta +0.52, recent 0.73; setup_success_rate: delta -0.14, recent 0.93. Logs: transport delay variation observed on monitored path | latency_ms deviation observed with approximate delta +17.76 | rsrp_dbm deviation observed with approximate delta -13.22 | packet_loss_pct deviation observed with approximate delta +0.52. Remediation applied by operations team: Check transport queue utilization, reroute traffic, or increase backhaul capacity.
++
++[case_0001] score=0.224
++Alarms: [ALM-RRU-DEGRADE]. KPI anomalies: latency_ms: delta +11.01, recent 32.72; rsrp_dbm: delta -10.91, recent -96.58; prb_util_pct: delta +5.99, recent 57.72; throughput_mbps: delta -5.73, recent 80.64; cpu_util_pct: delta -4.72, recent 41.27; rsrq_db: delta +0.91, recent -8.73. Logs: rsrp_dbm deviation observed with approximate delta -10.91 | latency_ms deviation observed with approximate delta +11.01 | packet_loss_pct deviation observed with approximate delta +0.31 | radio quality indicators deviated from rolling baseline. Remediation applied by operations team: Inspect RRU health, cabling, and replace degraded radio hardware if confirmed.
++
++[case_0060] score=0.224
++Alarms: [ALM-TEMP-HIGH, ALM-ADMISSION-REJECT, ALM-CELL-OVERLOAD]. KPI anomalies: rsrp_dbm: delta -15.47, recent -95.29; availability_pct: delta -8.26, recent 102.72; throughput_mbps: delta +7.20, recent 97.13; latency_ms: delta +5.40, recent 28.94; prb_util_pct: delta -2.46, recent 54.62; sinr_db: delta -1.33, recent 16.81. Logs: rsrp_dbm deviation observed with approximate delta -15.47 | radio quality indicators deviated from rolling baseline | service setup counters below expected range. Remediation applied by operations team: Tune admission thresholds, add capacity, or offload users to neighbors.

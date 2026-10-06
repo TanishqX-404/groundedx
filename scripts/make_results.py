@@ -133,6 +133,20 @@ def seed_metrics(exp: str, seed_dir: Path) -> dict:
         m["mean_citations"] = float(np.mean([len(r.get("citations") or []) for r in rows]))
         lat = [r["latency_ms"] for r in rows if r.get("latency_ms") is not None]
         m["eval_median_latency_ms"] = median(lat) if lat else None
+    if any(r.get("classifier_top1") for r in rows):
+        # Hybrid: how the SLM's choice relates to the classifier it reranks.
+        top1 = [r["classifier_top1"] for r in rows]
+        n = len(rows)
+        overrides = [r for r, t in zip(rows, top1) if r["prediction"] != t]
+        m["classifier_top1_acc"] = float(np.mean([t == r["gold"] for r, t in zip(rows, top1)]))
+        m["candidate_recall"] = float(
+            np.mean([r["gold"] in [c for c, _ in r["candidates"]] for r in rows])
+        )
+        m["override_rate"] = len(overrides) / n
+        m["override_fixes"] = sum(r["prediction"] == r["gold"] != t for r, t in zip(rows, top1)) / n
+        m["override_breaks"] = (
+            sum(t == r["gold"] != r["prediction"] for r, t in zip(rows, top1)) / n
+        )
     per_class = f1_score(gold, pred, labels=CLASSES, average=None, zero_division=0)
     m["per_class_f1"] = dict(zip(CLASSES, map(float, per_class)))
     return m
@@ -154,6 +168,11 @@ METRIC_COLUMNS = [
     *[f"invalid_{r}" for r in INVALID_REASONS],
     "mean_citations",
     "eval_median_latency_ms",
+    "classifier_top1_acc",
+    "candidate_recall",
+    "override_rate",
+    "override_fixes",
+    "override_breaks",
 ]
 
 
@@ -214,13 +233,15 @@ def main() -> None:
                     record(f"{exp}.{col}", stat)
             NUMBERS[f"{exp}.windows_per_seed"] = ",".join(str(int(v)) for v in group["n"])
 
+        pilots = sorted(e for e in stats if e.endswith("__val"))
+        main_exps = sorted(e for e in stats if not e.endswith("__val"))
         md += [
             "## All accuracy runs (full split)",
             "",
             "| experiment | windows/seed | accuracy | macro-F1 | invalid rate | faithfulness |",
             "|---|---|---|---|---|---|",
         ]
-        for exp in sorted(stats):
+        for exp in main_exps:
             s = stats[exp]
             md.append(
                 f"| {exp} | {NUMBERS[f'{exp}.windows_per_seed']} | {fmt(s['accuracy'])} | {fmt(s['macro_f1'])} | {fmt(s['invalid_rate'])} | {fmt(s.get('faithfulness', summarize([])))} |"
@@ -235,7 +256,7 @@ def main() -> None:
             "| experiment | clean | blended | blended: primary OR secondary | wrong(blended)=secondary | alarm absent | alarm present | retrieval hit | retrieval miss |",
             "|---|---|---|---|---|---|---|---|---|",
         ]
-        for exp in sorted(stats):
+        for exp in main_exps:
             s = stats[exp]
             md.append(
                 "| "
@@ -259,7 +280,51 @@ def main() -> None:
             )
         md.append("")
 
-        llm = [e for e in stats if e.startswith("llm__")]
+        hybrid = [e for e in sorted(stats) if "__hybrid" in e]
+        if hybrid:
+            md += [
+                "## Hybrid (GBDT top-N candidates -> SLM choice + grounded explanation)",
+                "",
+                "classifier top-1 = GBDT alone on the same windows; candidate recall = gold in the "
+                "N candidates (hybrid ceiling); fixes/breaks = fraction of windows where the SLM's "
+                "override of GBDT top-1 turned wrong->right / right->wrong. `__val` = validation pilot.",
+                "",
+                "| experiment | windows/seed | hybrid acc | classifier top-1 | candidate recall | override rate | fixes | breaks | faithfulness |",
+                "|---|---|---|---|---|---|---|---|---|",
+            ]
+            for exp in hybrid:
+                s = stats[exp]
+                cells = [
+                    fmt(s[c])
+                    for c in [
+                        "accuracy",
+                        "classifier_top1_acc",
+                        "candidate_recall",
+                        "override_rate",
+                        "override_fixes",
+                        "override_breaks",
+                        "faithfulness",
+                    ]
+                ]
+                md.append(
+                    f"| {exp} | {NUMBERS[f'{exp}.windows_per_seed']} | " + " | ".join(cells) + " |"
+                )
+            md.append("")
+        if pilots:
+            md += [
+                "## Validation-split pilots (not test results)",
+                "",
+                "| experiment | windows/seed | accuracy | macro-F1 | invalid rate | faithfulness |",
+                "|---|---|---|---|---|---|",
+            ]
+            for exp in pilots:
+                s = stats[exp]
+                md.append(
+                    f"| {exp} | {NUMBERS[f'{exp}.windows_per_seed']} | {fmt(s['accuracy'])} | {fmt(s['macro_f1'])} | {fmt(s['invalid_rate'])} | {fmt(s.get('faithfulness', summarize([])))} |"
+                )
+            md.append("")
+
+        llm = [e for e in main_exps if e.startswith("llm__")]
         if llm:
             md += [
                 "## E5 invalid outputs by reason (fraction of windows)",
@@ -353,7 +418,9 @@ def main() -> None:
             if not calls:
                 continue
             man = json.loads((d / "manifest.json").read_text())
-            lat = np.array([c["latency_ms"] for c in calls])
+            # End-to-end per diagnosis: classifier (hybrid only) + SLM call.
+            clf = np.array([c.get("classifier_ms", 0.0) for c in calls])
+            lat = np.array([c["latency_ms"] for c in calls]) + clf
             peaks = [c["peak_mem_bytes"] for c in calls if c["peak_mem_bytes"] is not None]
             power = [c["mean_power_w"] for c in calls if c["mean_power_w"] is not None]
             energy = [c["energy_j"] for c in calls if c["energy_j"] is not None]
@@ -365,6 +432,7 @@ def main() -> None:
                     "gpu": (man.get("gpus") or ["?"])[0],
                     "median_latency_ms": float(np.median(lat)),
                     "p95_latency_ms": float(np.percentile(lat, 95)),
+                    "median_classifier_ms": float(np.median(clf)),
                     "peak_vram_gb": max(peaks) / 1e9 if peaks else None,
                     "peak_vram_over_idle_gb": (max(peaks) - man["mem_before_load_bytes"]) / 1e9
                     if peaks
@@ -379,13 +447,14 @@ def main() -> None:
         cols = [
             "median_latency_ms",
             "p95_latency_ms",
+            "median_classifier_ms",
             "peak_vram_gb",
             "peak_vram_over_idle_gb",
             "mean_power_w",
             "energy_per_call_j",
         ]
         md += [
-            "## E2 profiling (100 measured calls/seed after 5 warm-up; NVML @ 50 Hz)",
+            "## E2 profiling (100 measured calls/seed after 5 warm-up; NVML @ 50 Hz; latency is end-to-end incl. classifier)",
             "",
             "| experiment | GPU | calls/seed | " + " | ".join(cols) + " |",
             "|---|---|---|" + "---|" * len(cols),

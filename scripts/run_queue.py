@@ -22,11 +22,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from groundedx.calls import CallSpec, experiment_name  # noqa: E402
 from groundedx.experiment import RESULTS_ROOT, load_experiment_config  # noqa: E402
 
 CFG = load_experiment_config()
 SEEDS = [str(s) for s in CFG["seeds"]]
 MAIN = "qwen2.5-3b-q4"
+SMALL = "qwen2.5-1.5b-q4"
 
 # Priority order: E1 + E3 first, then the rest of the E2 sweep, then E7 accuracy.
 ACCURACY_JOBS: list[dict] = [
@@ -34,8 +36,8 @@ ACCURACY_JOBS: list[dict] = [
     {"model": MAIN, "mode": "rag", "kb": "full", "k": 5},
     {"model": MAIN, "mode": "rag", "kb": "no_remediation", "k": 5},
     {"model": MAIN, "mode": "rag", "kb": "generic_remediation", "k": 5},
-    {"model": "qwen2.5-1.5b-q4", "mode": "zero-shot"},
-    {"model": "qwen2.5-1.5b-q4", "mode": "rag", "kb": "full", "k": 5},
+    {"model": SMALL, "mode": "zero-shot"},
+    {"model": SMALL, "mode": "rag", "kb": "full", "k": 5},
     {"model": "qwen2.5-3b-q8", "mode": "zero-shot"},
     {"model": "qwen2.5-3b-q8", "mode": "rag", "kb": "full", "k": 5},
     {"model": "qwen2.5-1.5b-q8", "mode": "zero-shot"},
@@ -43,29 +45,60 @@ ACCURACY_JOBS: list[dict] = [
     {"model": MAIN, "mode": "rag", "kb": "full", "k": 1},
     {"model": MAIN, "mode": "rag", "kb": "full", "k": 3},
 ]
+# Validation-split pilot for the hybrid (decision rule only; seed 7).
+PILOT_JOBS: list[dict] = [
+    {"model": MAIN, "mode": "hybrid", "candidates": 3, "split": "val", "seeds": ["7"]},
+    {"model": SMALL, "mode": "hybrid", "candidates": 3, "split": "val", "seeds": ["7"]},
+    {"model": MAIN, "mode": "rag", "docs": True, "split": "val", "seeds": ["7"]},
+    {"model": MAIN, "mode": "zero-shot", "docs": True, "split": "val", "seeds": ["7"]},
+]
+# Full test runs for the hybrid system and the fault-reference ablation.
+HYBRID_JOBS: list[dict] = [
+    {"model": MAIN, "mode": "hybrid", "candidates": 3},
+    {"model": MAIN, "mode": "hybrid", "candidates": 1},
+    {"model": SMALL, "mode": "hybrid", "candidates": 3},
+    {"model": SMALL, "mode": "hybrid", "candidates": 1},
+    {"model": MAIN, "mode": "rag", "docs": True},
+    {"model": MAIN, "mode": "zero-shot", "docs": True},
+]
 PROFILE_JOBS: list[dict] = [
     {"model": m, "mode": mode} for m in CFG["generation"]["models"] for mode in ("zero-shot", "rag")
-]
+] + [{"model": m, "mode": "hybrid", "candidates": n} for m in (MAIN, SMALL) for n in (3, 1)]
+PHASE_JOBS = {"accuracy": ACCURACY_JOBS, "pilot": PILOT_JOBS, "hybrid": HYBRID_JOBS}
+
+
+def spec_of(job: dict) -> CallSpec:
+    return CallSpec(job["mode"], job.get("k", 5), job.get("docs", False), job.get("candidates", 3))
 
 
 def model_path(models_dir: Path, model: str) -> Path:
     return models_dir / CFG["generation"]["models"][model]["file"]
 
 
+def _lines(path: Path) -> int:
+    return sum(1 for _ in path.open(encoding="utf-8")) if path.exists() else 0
+
+
 def accuracy_done(job: dict, n_expected: int = 600) -> bool:
-    if job["mode"] == "zero-shot":
-        exp = f"llm__{job['model']}__zs"
-    else:
-        exp = f"llm__{job['model']}__rag__{job['kb']}__k{job['k']}"
-    for seed in SEEDS:
-        path = RESULTS_ROOT / exp / f"seed_{seed}" / "predictions.jsonl"
-        if not path.exists() or sum(1 for _ in path.open(encoding="utf-8")) < n_expected:
-            return False
-    return True
+    exp = experiment_name(
+        job["model"], spec_of(job), job.get("kb", "full"), job.get("split", "test")
+    )
+    return all(
+        _lines(RESULTS_ROOT / exp / f"seed_{s}" / "predictions.jsonl") >= n_expected
+        for s in job.get("seeds", SEEDS)
+    )
+
+
+def profile_done(job: dict, tag: str) -> bool:
+    spec = spec_of(job)
+    mode_tag = {"rag": "rag", "zero-shot": "zs", "hybrid": f"hybrid{spec.candidates}"}[spec.mode]
+    exp = f"profile__{job['model']}__{mode_tag}" + (f"__{tag}" if tag else "")
+    n = int(CFG["profiling"]["warmup_calls"]) + int(CFG["profiling"]["measured_calls"])
+    return all(_lines(RESULTS_ROOT / exp / f"seed_{s}" / "calls.jsonl") >= n for s in SEEDS)
 
 
 def command(job: dict, phase: str, models_dir: Path, gpu: str, tag: str) -> list[str]:
-    script = "run_llm.py" if phase == "accuracy" else "run_profile.py"
+    script = "run_profile.py" if phase == "profile" else "run_llm.py"
     cmd = [
         sys.executable,
         str(ROOT / "scripts" / script),
@@ -76,12 +109,18 @@ def command(job: dict, phase: str, models_dir: Path, gpu: str, tag: str) -> list
         "--mode",
         job["mode"],
         "--seeds",
-        *SEEDS,
+        *job.get("seeds", SEEDS),
     ]
-    if job["mode"] == "rag":
+    if job["mode"] in ("rag", "hybrid"):
         cmd += ["-k", str(job.get("k", 5))]
-        if phase == "accuracy":
-            cmd += ["--kb-variant", job["kb"]]
+        if phase != "profile":
+            cmd += ["--kb-variant", job.get("kb", "full")]
+    if job["mode"] == "hybrid":
+        cmd += ["--candidates", str(job["candidates"])]
+    if job.get("docs"):
+        cmd += ["--class-docs"]
+    if phase != "profile":
+        cmd += ["--split", job.get("split", "test")]
     if phase == "profile":
         cmd += ["--nvml-index", gpu] + (["--tag", tag] if tag else [])
     return cmd
@@ -89,7 +128,7 @@ def command(job: dict, phase: str, models_dir: Path, gpu: str, tag: str) -> list
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--phase", choices=["accuracy", "profile"], required=True)
+    parser.add_argument("--phase", choices=[*PHASE_JOBS, "profile"], required=True)
     parser.add_argument("--gpus", nargs="+", default=["0"])
     parser.add_argument("--models-dir", default="models")
     parser.add_argument("--tag", default="")
@@ -103,10 +142,12 @@ def main() -> None:
     args = parser.parse_args()
     deadline = time.time() + args.deadline_hours * 3600 if args.deadline_hours else None
 
-    jobs = ACCURACY_JOBS if args.phase == "accuracy" else PROFILE_JOBS
+    jobs = PROFILE_JOBS if args.phase == "profile" else PHASE_JOBS[args.phase]
     if args.only:
         jobs = [j for j in jobs if j["model"] in args.only]
-    if args.phase == "accuracy":
+    if args.phase == "profile":
+        jobs = [j for j in jobs if not profile_done(j, args.tag)]
+    else:
         jobs = [j for j in jobs if not accuracy_done(j)]
     pending: queue.Queue = queue.Queue()
     for job in jobs:
