@@ -1,0 +1,37 @@
+{
+  "git_commit": "833805fbc9e28aefa6159f287b23b54e5593440a",
+  "command": "python3 /kaggle/working/groundedx/scripts/run_profile.py --model qwen2.5-3b-q4 --model-path models/qwen2.5-3b-instruct-q4_k_m.gguf --mode hybrid --seeds 7 19 41 -k 5 --candidates 3 --nvml-index 0 --tag t4",
+  "seed": 41,
+  "timestamp_utc": "2026-10-08T20:41:25.418381+00:00",
+  "python": "3.13.15",
+  "platform": "Linux-6.18.48+-x86_64-with-glibc2.39",
+  "package_versions": {
+    "numpy": "2.1.3",
+    "pandas": "2.3.3",
+    "sklearn": "1.6.1",
+    "xgboost": "3.4.1",
+    "llama_cpp": null,
+    "pynvml": null
+  },
+  "gpus": [
+    "Tesla T4, 580.178.04, 15360 MiB",
+    "Tesla T4, 580.178.04, 15360 MiB"
+  ],
+  "cuda_version": "13.0",
+  "model": "qwen2.5-3b-q4",
+  "mode": "hybrid",
+  "k": 5,
+  "class_docs": false,
+  "candidates": 3,
+  "warmup_calls": 5,
+  "measured_calls": 100,
+  "nvml_poll_hz": 50,
+  "power_supported": true,
+  "mem_before_load_bytes": 470089728,
+  "mem_after_load_bytes": 2763194368,
+  "n_gpu_layers": -1,
+  "backend": "LlamaServerClient",
+  "llama_server_build": "b1-a7b94df",
+  "model_file": "qwen2.5-3b-instruct-q4_k_m.gguf",
+  "model_sha256": "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d"
+}
