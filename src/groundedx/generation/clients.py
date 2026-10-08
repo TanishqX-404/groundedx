@@ -36,4 +36,5 @@ def backend_info(client: Any) -> dict[str, Any]:
     return {
         "backend": type(client).__name__,
         "llama_server_build": getattr(client, "server_version", None),
+        "llama_server_extra_args": getattr(client, "extra_args", None),
     }

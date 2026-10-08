@@ -10,6 +10,8 @@ the per-token cost of llama-cpp-python's full-vocabulary grammar pass.
 from __future__ import annotations
 
 import json
+import os
+import shlex
 import socket
 import subprocess
 import time
@@ -65,6 +67,10 @@ class LlamaServerClient:
             str(seed),
             "--no-webui",
         ]
+        # Extra flags from the environment (e.g. "--cache-ram 0" on low-RAM hosts);
+        # recorded in every run manifest via backend_info().
+        self.extra_args = shlex.split(os.environ.get("LLAMA_SERVER_ARGS", ""))
+        cmd += self.extra_args
         self._log = open(log_path, "a", encoding="utf-8") if log_path else subprocess.DEVNULL
         self._proc = subprocess.Popen(cmd, stdout=self._log, stderr=subprocess.STDOUT)
         self._wait_ready()
