@@ -1,0 +1,40 @@
+{
+  "git_commit": "3671332c0bd6b45ced3f9ec00b2fab56484c8477",
+  "command": "python.exe C:\\Users\\tanis\\Desktop\\groundedx\\scripts\\run_profile.py --model qwen2.5-3b-q8 --model-path models\\qwen2.5-3b-instruct-q8_0.gguf --mode rag --seeds 7 19 41 -k 5 --nvml-index 0 --tag rtx3050",
+  "seed": 41,
+  "timestamp_utc": "2026-10-09T21:51:24.496165+00:00",
+  "python": "3.10.11",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "package_versions": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "sklearn": "1.7.2",
+    "xgboost": "3.2.0",
+    "llama_cpp": "0.3.2",
+    "pynvml": null
+  },
+  "gpus": [
+    "NVIDIA GeForce RTX 3050 Laptop GPU, 566.07, 4096 MiB"
+  ],
+  "cuda_version": "12.7",
+  "model": "qwen2.5-3b-q8",
+  "mode": "rag",
+  "k": 5,
+  "class_docs": false,
+  "candidates": null,
+  "warmup_calls": 5,
+  "measured_calls": 100,
+  "nvml_poll_hz": 50,
+  "power_supported": true,
+  "mem_before_load_bytes": 544075776,
+  "mem_after_load_bytes": 4094558208,
+  "n_gpu_layers": -1,
+  "backend": "LlamaServerClient",
+  "llama_server_build": "b11398-a7b94df2c",
+  "llama_server_extra_args": [
+    "--cache-ram",
+    "0"
+  ],
+  "model_file": "qwen2.5-3b-instruct-q8_0.gguf",
+  "model_sha256": "6dcc22694c8654b045ec40bbe350212b88893fd9010e8474bae5b19a43578ba1"
+}
