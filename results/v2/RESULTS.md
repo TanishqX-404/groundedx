@@ -58,6 +58,24 @@ Retrieval hit = a same-class case is in the full-KB TF-IDF top-5 for that window
 | random_forest | 0.735 ± 0.025 (n=3) | 0.528 ± 0.006 (n=3) | 0.753 ± 0.014 (n=3) | 0.477 ± 0.036 (n=3) | 0.466 ± 0.021 (n=3) | 0.679 ± 0.031 (n=3) | 0.615 ± 0.010 (n=3) | 0.536 ± 0.005 (n=3) |
 | rule | 0.318 ± 0.030 (n=3) | 0.324 ± 0.020 (n=3) | 0.365 ± 0.022 (n=3) | 0.060 ± 0.005 (n=3) | 0.014 ± 0.007 (n=3) | 0.626 ± 0.016 (n=3) | 0.466 ± 0.026 (n=3) | 0.193 ± 0.010 (n=3) |
 
+## Hybrid (GBDT top-N candidates -> SLM choice + grounded explanation)
+
+classifier top-1 = GBDT alone on the same windows; candidate recall = gold in the N candidates (hybrid ceiling); fixes/breaks = fraction of windows where the SLM's override of GBDT top-1 turned wrong->right / right->wrong. `__val` = validation pilot.
+
+| experiment | windows/seed | hybrid acc | classifier top-1 | candidate recall | override rate | fixes | breaks | faithfulness |
+|---|---|---|---|---|---|---|---|---|
+| llm__qwen2.5-1.5b-q4__hybrid3__full__k5__val | 600 | 0.527 (n=1) | 0.630 (n=1) | 0.873 (n=1) | 0.315 (n=1) | 0.050 (n=1) | 0.153 (n=1) | 0.813 (n=1) |
+| llm__qwen2.5-3b-q4__hybrid3__full__k5__val | 600 | 0.575 (n=1) | 0.630 (n=1) | 0.873 (n=1) | 0.283 (n=1) | 0.063 (n=1) | 0.118 (n=1) | 0.975 (n=1) |
+
+## Validation-split pilots (not test results)
+
+| experiment | windows/seed | accuracy | macro-F1 | invalid rate | faithfulness |
+|---|---|---|---|---|---|
+| llm__qwen2.5-1.5b-q4__hybrid3__full__k5__val | 600 | 0.527 (n=1) | 0.520 (n=1) | 0.000 (n=1) | 0.813 (n=1) |
+| llm__qwen2.5-3b-q4__hybrid3__full__k5__val | 600 | 0.575 (n=1) | 0.569 (n=1) | 0.000 (n=1) | 0.975 (n=1) |
+| llm__qwen2.5-3b-q4__rag__full__k5__docs__val | 600 | 0.260 (n=1) | 0.245 (n=1) | 0.000 (n=1) | 0.950 (n=1) |
+| llm__qwen2.5-3b-q4__zs__docs__val | 600 | 0.273 (n=1) | 0.259 (n=1) | 0.000 (n=1) | 0.000 (n=1) |
+
 ## E5 invalid outputs by reason (fraction of windows)
 
 | experiment | truncated | parse_error | schema_error | out_of_taxonomy | bad_citation | mean #citations |
