@@ -176,6 +176,121 @@ METRIC_COLUMNS = [
 ]
 
 
+M3 = "llm__qwen2.5-3b-q4"
+M7 = "llm__qwen2.5-7b-q4"
+KEY_RUNS = [
+    "rule",
+    "random_forest",
+    "gbdt",
+    "gbdt_frozen",
+    "knn_vote__full__k5",
+    f"{M3}__zs",
+    f"{M3}__rag__full__k5",
+    f"{M3}__zs__docs",
+    f"{M3}__rag__full__k5__docs",
+    f"{M3}__hybrid3__full__k5",
+    f"{M3}__hybrid1__full__k5",
+]
+PAIRED_TESTS = [
+    ("3B RAG vs zero-shot", f"{M3}__rag__full__k5", f"{M3}__zs"),
+    ("3B zero-shot+docs vs zero-shot", f"{M3}__zs__docs", f"{M3}__zs"),
+    ("3B zero-shot+docs vs RAG+docs", f"{M3}__zs__docs", f"{M3}__rag__full__k5__docs"),
+    ("3B RAG k=1 vs k=5", f"{M3}__rag__full__k1", f"{M3}__rag__full__k5"),
+    ("3B RAG k=3 vs k=5", f"{M3}__rag__full__k3", f"{M3}__rag__full__k5"),
+    ("3B RAG full vs no-remediation KB", f"{M3}__rag__full__k5", f"{M3}__rag__no_remediation__k5"),
+    (
+        "3B RAG full vs generic-remediation KB",
+        f"{M3}__rag__full__k5",
+        f"{M3}__rag__generic_remediation__k5",
+    ),
+    ("kNN full vs no-remediation KB", "knn_vote__full__k5", "knn_vote__no_remediation__k5"),
+    ("3B RAG vs kNN-vote", f"{M3}__rag__full__k5", "knn_vote__full__k5"),
+    ("GBDT (frozen) vs RandomForest", "gbdt_frozen", "random_forest"),
+    ("GBDT (frozen) vs 3B hybrid top-3", "gbdt_frozen", f"{M3}__hybrid3__full__k5"),
+    (
+        "GBDT (frozen) vs 1.5B hybrid top-3",
+        "gbdt_frozen",
+        "llm__qwen2.5-1.5b-q4__hybrid3__full__k5",
+    ),
+    (
+        "3B hybrid top-3 blind vs top-3",
+        f"{M3}__hybrid3__full__k5__blind",
+        f"{M3}__hybrid3__full__k5",
+    ),
+    ("GBDT (frozen) vs 3B hybrid top-3 blind", "gbdt_frozen", f"{M3}__hybrid3__full__k5__blind"),
+    (
+        "3B RAG label-exposed KB vs controlled",
+        f"{M3}__rag__label_exposed__k5",
+        f"{M3}__rag__full__k5",
+    ),
+    ("3B zero-shot leaky logs vs controlled", f"{M3}__zs__data-leaky", f"{M3}__zs"),
+    (
+        "3B RAG+docs KB-all vs KB-128",
+        f"{M3}__rag__full__k5__docs__kball",
+        f"{M3}__rag__full__k5__docs",
+    ),
+    ("3B zero-shot+docs z-ranking vs raw", f"{M3}__zs__docs__enc-z", f"{M3}__zs__docs"),
+    (
+        "3B RAG+docs KB-all+z vs KB-128 raw",
+        f"{M3}__rag__full__k5__docs__kball__enc-z",
+        f"{M3}__rag__full__k5__docs",
+    ),
+    ("7B zero-shot+docs vs 3B", f"{M7}__zs__docs", f"{M3}__zs__docs"),
+    ("7B RAG+docs vs 3B", f"{M7}__rag__full__k5__docs", f"{M3}__rag__full__k5__docs"),
+    (
+        "GBDT (frozen) vs 7B RAG+docs KB-all+z",
+        "gbdt_frozen",
+        f"{M7}__rag__full__k5__docs__kball__enc-z",
+    ),
+]
+EXPLANATION_COLUMNS = [
+    "grounded",
+    "ctrl_generic",
+    "ctrl_shuffled",
+    "cite_any_consistent",
+    "cite_all_consistent",
+    "remed_matches_pred",
+    "remed_matches_gold",
+    "entity_mentions",
+    "entity_unsupported",
+    "grounded_and_wrong",
+]
+
+
+def correct_by_window(exp: str) -> dict[str, bool] | None:
+    out: dict[str, bool] = {}
+    for d in seed_dirs(exp):
+        for r in read_jsonl(d / "predictions.jsonl"):
+            out[r["id"]] = bool(r.get("valid", True)) and r["prediction"] == r["gold"]
+    return out or None
+
+
+def mcnemar(a: str, b: str) -> dict | None:
+    """Exact McNemar test on windows both runs scored (only when all seeds complete)."""
+
+    from scipy.stats import binomtest
+
+    if not (RESULTS_ROOT / a).exists() or not (RESULTS_ROOT / b).exists():
+        return None
+    ca, cb = correct_by_window(a), correct_by_window(b)
+    if not ca or not cb:
+        return None
+    ids = sorted(ca.keys() & cb.keys())
+    if len(ids) < 1800:
+        return None
+    n10 = sum(ca[i] and not cb[i] for i in ids)
+    n01 = sum(cb[i] and not ca[i] for i in ids)
+    p = binomtest(n10, n10 + n01, 0.5).pvalue if n10 + n01 else 1.0
+    return {
+        "n": len(ids),
+        "acc_a": sum(ca[i] for i in ids) / len(ids),
+        "acc_b": sum(cb[i] for i in ids) / len(ids),
+        "n10": n10,
+        "n01": n01,
+        "p_value": float(p),
+    }
+
+
 def main() -> None:
     out_tables = RESULTS_ROOT / "tables"
     out_tables.mkdir(parents=True, exist_ok=True)
@@ -407,7 +522,7 @@ def main() -> None:
             r, m = summarize(list(g.recall)), summarize(list(g.mrr))
             record(f"{exp}.recall@{k}", r)
             record(f"{exp}.mrr@{k}", m)
-            md.append(f"| {exp.split('__')[1]} | {k} | {fmt(r)} | {fmt(m)} |")
+            md.append(f"| {exp[len('retrieval__') :]} | {k} | {fmt(r)} | {fmt(m)} |")
         md.append("")
 
     # ---------------- profiling ----------------
@@ -468,6 +583,93 @@ def main() -> None:
             md.append(
                 f"| {exp} | {g.gpu.iloc[0]} | {int(g.calls.iloc[0])} | " + " | ".join(cells) + " |"
             )
+        md.append("")
+
+    # ---------------- per-seed accuracy (key runs) ----------------
+    if all_rows:
+        md += [
+            "## Per-seed test accuracy (key runs)",
+            "",
+            "| experiment | seed 7 | seed 19 | seed 41 |",
+            "|---|---|---|---|",
+        ]
+        for exp in [e for e in KEY_RUNS if e in stats]:
+            per = {r["seed"]: r["accuracy"] for r in all_rows if r["experiment"] == exp}
+            cells = " | ".join(f"{per.get(s, float('nan')):.4f}" for s in (7, 19, 41))
+            md.append(f"| {exp} | {cells} |")
+        md.append("")
+
+    # ---------------- paired significance tests ----------------
+    paired = []
+    for name, a, b in PAIRED_TESTS:
+        res = mcnemar(a, b)
+        if res is None:
+            continue
+        paired.append({"comparison": name, "a": a, "b": b, **res})
+        for key in ("acc_a", "acc_b", "n10", "n01", "p_value"):
+            NUMBERS[f"paired.{a}.vs.{b}.{key}"] = res[key]
+    if paired:
+        pd.DataFrame(paired).to_csv(out_tables / "paired_tests.csv", index=False)
+        md += [
+            "## Paired tests (exact McNemar over the pooled test windows of all seeds)",
+            "",
+            "n10 = windows only A gets right; n01 = windows only B gets right.",
+            "",
+            "| comparison | A | B | n10 / n01 | p |",
+            "|---|---|---|---|---|",
+        ]
+        for r in paired:
+            md.append(
+                f"| {r['comparison']} | {r['acc_a']:.3f} | {r['acc_b']:.3f} | "
+                f"{r['n10']} / {r['n01']} | {r['p_value']:.2g} |"
+            )
+        md.append("")
+
+    # ---------------- explanation checks ----------------
+    exp_csv = out_tables / "explanation_checks_per_seed.csv"
+    if exp_csv.exists():
+        ec = pd.read_csv(exp_csv)
+        cols = [c for c in EXPLANATION_COLUMNS if c in ec.columns]
+        md += [
+            "## Explanation checks (scripts/explanation_checks.py; evaluator-side)",
+            "",
+            "grounded = 3-condition lexical metric; ctrl_generic / ctrl_shuffled = the same metric "
+            "for a fixed generic sentence / another window's explanation (negative controls); "
+            "cite_* = cited cases whose class equals the prediction; remed_* = the generated "
+            "remediation's closest runbook is the predicted / gold class's; entity_unsupported = "
+            "among explanations naming a KPI or alarm, the share naming one absent from the "
+            "window's own observation.",
+            "",
+            "| experiment | " + " | ".join(cols) + " |",
+            "|---|" + "---|" * len(cols),
+        ]
+        for exp, g in ec.groupby("experiment"):
+            cells = []
+            for c in cols:
+                st = summarize(list(g[c]))
+                record(f"explain.{exp}.{c}", st)
+                cells.append(fmt(st))
+            md.append(f"| {exp} | " + " | ".join(cells) + " |")
+        md.append("")
+
+    # ---------------- difficulty sweep ----------------
+    sweep_csv = out_tables / "difficulty_sweep_per_seed.csv"
+    if sweep_csv.exists():
+        sw = pd.read_csv(sweep_csv)
+        metrics = ["rule", "random_forest", "gbdt", "knn_vote", "recall_at_5"]
+        md += [
+            "## Difficulty sweep (classical baselines + retrieval; extra-alarm probability 0.82)",
+            "",
+            "| P(own alarm) | P(blend) | seeds | " + " | ".join(metrics) + " |",
+            "|---|---|---|" + "---|" * len(metrics),
+        ]
+        for (ta, bl), g in sw.groupby(["true_alarm_probability", "distractor_probability"]):
+            cells = []
+            for c in metrics:
+                st = summarize(list(g[c]))
+                record(f"sweep.alarm{ta}.blend{bl}.{c}", st)
+                cells.append(fmt(st))
+            md.append(f"| {ta} | {bl} | {len(g)} | " + " | ".join(cells) + " |")
         md.append("")
 
     # ---------------- provenance (from manifests) ----------------
