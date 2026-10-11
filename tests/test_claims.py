@@ -326,3 +326,86 @@ def test_original_prompt_unchanged_by_call_builder(setups):
     query = encode_context(sample, DOMAIN)
     expected = render_prompt(query, setup.retriever.retrieve(query, k=5), DOMAIN, TEMPLATE)
     assert CallBuilder(setup, CallSpec("rag", k=5)).build(sample)["prompt"] == expected
+
+
+# ---- Review controls (label-exposed, fairness, blind rerank) -----------------
+
+
+def test_default_dataset_and_kb_unchanged_by_variants(setups):
+    """The paper benchmark must be byte-identical to the committed seed-7 KB."""
+
+    committed = [
+        json.loads(line)
+        for line in (ROOT / "results/v2/dataset/seed_7/kb_full.jsonl").open(encoding="utf-8")
+    ]
+    assert [d["text"] for d in setups["full"].documents] == [d["text"] for d in committed]
+
+
+def test_leaky_logs_change_only_log_lines():
+    clean = generate_dataset(DOMAIN, 64, seed=3)
+    leaky = generate_dataset(DOMAIN, 64, seed=3, leaky_logs=True)
+    for a, b in zip(clean, leaky):
+        assert a["kpis"] == b["kpis"] and a["alarms"] == b["alarms"] and a["id"] == b["id"]
+    nominal = {
+        f.name: sorted(f.kpi_effects, key=lambda k: -abs(f.kpi_effects[k]))[:3]
+        for f in DOMAIN.taxonomy
+    }
+    hits = sum(
+        any(name in line for line in b["logs"] for name in nominal[b["fault_class"]]) for b in leaky
+    )
+    assert hits > 0.6 * len(leaky)
+
+
+def test_label_exposed_kb_is_labelled_control():
+    setup = prepare_seed(7, "label_exposed")
+    cards = [d for d in setup.documents if d["doc_type"] == "fault_card"]
+    assert len(cards) == len(CLASSES)
+    assert all(
+        f"Diagnosis label: {setup.scoring_labels[c['chunk_id']]}" in c["text"] for c in cards
+    )
+    assert len(setup.documents) == 8 * len(CLASSES) + len(CLASSES)
+
+
+def test_kb_all_and_z_ranking():
+    setup = prepare_seed(7, "full", kb_size="all", ranking="z")
+    assert len(setup.documents) == len(setup.splits["train"])
+    for doc in setup.documents[:50]:
+        for label in CLASSES:
+            assert label.lower() not in doc["text"].lower()
+    sample = setup.splits["test"][0]
+    assert encode_context(sample, DOMAIN, ranking="z") != encode_context(sample, DOMAIN)
+
+
+def test_experiment_names_backward_compatible():
+    from groundedx.calls import CallSpec, experiment_name
+
+    assert experiment_name("m", CallSpec("zero-shot"), "full", "test") == "llm__m__zs"
+    assert experiment_name("m", CallSpec("rag", 5), "full", "test") == "llm__m__rag__full__k5"
+    assert (
+        experiment_name("m", CallSpec("rag", 5, True), "full", "val")
+        == "llm__m__rag__full__k5__docs__val"
+    )
+    assert (
+        experiment_name("m", CallSpec("hybrid", 5, False, 3, True), "full", "test")
+        == "llm__m__hybrid3__full__k5__blind"
+    )
+    assert (
+        experiment_name("m", CallSpec("rag", 5, True), "full", "test", kb_size="all", ranking="z")
+        == "llm__m__rag__full__k5__docs__kball__enc-z"
+    )
+
+
+def test_blind_hybrid_hides_probabilities(setups):
+    from groundedx.calls import CallBuilder, CallSpec
+
+    setup = setups["full"]
+    samples = setup.splits["val"][:5]
+    seen = CallBuilder(setup, CallSpec("hybrid", 5, False, 3))
+    blind = CallBuilder(setup, CallSpec("hybrid", 5, False, 3, True))
+    seen.precompute(samples)
+    blind.precompute(samples)
+    for sample in samples:
+        a, b = seen.build(sample), blind.build(sample)
+        assert set(a["classes"]) == set(b["classes"])
+        assert "(p=" in a["prompt"] and "(p=" not in b["prompt"]
+        assert b["candidates"] == a["candidates"]  # bookkeeping keeps classifier order

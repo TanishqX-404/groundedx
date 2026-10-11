@@ -147,15 +147,17 @@ def models(cfg: dict) -> None:
     target = ROOT / "models"
     target.mkdir(exist_ok=True)
     for key, spec in cfg["generation"]["models"].items():
-        dst = target / spec["file"]
-        if dst.exists():
-            continue
-        found = glob.glob(f"/kaggle/input/**/models/{spec['file']}", recursive=True)
-        if found:
-            os.symlink(found[0], dst)
-            print("reusing", found[0])
-        else:
-            print(key, hf_hub_download(spec["repo"], spec["file"], local_dir=target), flush=True)
+        # Split GGUFs: llama.cpp loads the first part and finds the rest next to it.
+        for name in [spec["file"], *spec.get("extra_files", [])]:
+            dst = target / name
+            if dst.exists():
+                continue
+            found = glob.glob(f"/kaggle/input/**/models/{name}", recursive=True)
+            if found:
+                os.symlink(found[0], dst)
+                print("reusing", found[0])
+            else:
+                print(key, hf_hub_download(spec["repo"], name, local_dir=target), flush=True)
 
 
 def plan(rq, phases: list[str], profile_tag: str) -> dict[str, list[dict]]:

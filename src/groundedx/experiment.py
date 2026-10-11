@@ -20,7 +20,7 @@ from typing import Any
 import yaml
 
 from groundedx.config import DomainConfig, load_domain_bundle
-from groundedx.kb.build_kb import build_documents
+from groundedx.kb.build_kb import LABEL_EXPOSED, build_documents, label_cards
 from groundedx.kb.scoring_labels import make_scoring_labels, select_kb_cases
 from groundedx.retrieval.tfidf_retriever import TfidfRetriever
 from groundedx.simulator.kpi_generator import generate_dataset, split_dataset
@@ -43,20 +43,67 @@ class SeedSetup:
     documents: list[dict[str, str]]
     scoring_labels: dict[str, str]
     retriever: TfidfRetriever
+    ranking: str = "raw"
+
+
+# Simulator settings per data variant. "default" is the paper benchmark.
+# "leaky" is the label-exposed CONTROL (log lines derived from the injected class).
+DATA_VARIANTS: dict[str, dict[str, Any]] = {
+    "default": {},
+    "leaky": {"leaky_logs": True},
+    "easy": {
+        "true_alarm_probability": 0.9,
+        "extra_alarm_probability": 0.3,
+        "distractor_probability": 0.3,
+    },  # fmt: skip
+    "mid": {
+        "true_alarm_probability": 0.7,
+        "extra_alarm_probability": 0.6,
+        "distractor_probability": 0.55,
+    },  # fmt: skip
+}
+LABEL_CARD_BONUS = 0.20  # score bonus the label-exposed configuration gave its cards
 
 
 def prepare_seed(
-    seed: int, kb_variant: str = "full", config: dict[str, Any] | None = None
+    seed: int,
+    kb_variant: str = "full",
+    config: dict[str, Any] | None = None,
+    *,
+    data_variant: str = "default",
+    kb_size: str | None = None,
+    ranking: str = "raw",
 ) -> SeedSetup:
+    """Build one seed's data, KB and retriever.
+
+    ``kb_size``: None -> ``kb.cases_per_class`` per class (paper default);
+    ``"all"`` -> every training window becomes a case.
+    """
+
     cfg = config or load_experiment_config()
     domain = load_domain_bundle(ROOT / cfg["domain"])
-    rows = generate_dataset(domain, int(cfg["dataset"]["n_windows"]), seed)
+    overrides = dict(DATA_VARIANTS[data_variant])
+    leaky_logs = bool(overrides.pop("leaky_logs", False))
+    if overrides:
+        domain = domain.model_copy(update=overrides)
+    rows = generate_dataset(domain, int(cfg["dataset"]["n_windows"]), seed, leaky_logs=leaky_logs)
     splits = split_dataset(rows)
-    kb_samples = select_kb_cases(splits["train"], int(cfg["kb"]["cases_per_class"]), seed)
-    documents = build_documents(kb_samples, domain, variant=kb_variant)
+    per_class = len(splits["train"]) if kb_size == "all" else int(cfg["kb"]["cases_per_class"])
+    kb_samples = select_kb_cases(splits["train"], per_class, seed)
+    documents = build_documents(kb_samples, domain, variant=kb_variant, ranking=ranking)
     scoring_labels = make_scoring_labels(kb_samples, [d["chunk_id"] for d in documents])
-    retriever = TfidfRetriever(documents, sublinear_tf=bool(cfg["retrieval"]["sublinear_tf"]))
-    return SeedSetup(seed, domain, splits, kb_samples, documents, scoring_labels, retriever)
+    bonus = None
+    if kb_variant == LABEL_EXPOSED:
+        cards = label_cards(domain)
+        documents = documents + cards
+        scoring_labels.update({c["chunk_id"]: f.name for c, f in zip(cards, domain.taxonomy)})
+        bonus = {"fault_card": LABEL_CARD_BONUS}
+    retriever = TfidfRetriever(
+        documents, sublinear_tf=bool(cfg["retrieval"]["sublinear_tf"]), doc_type_bonus=bonus
+    )
+    return SeedSetup(
+        seed, domain, splits, kb_samples, documents, scoring_labels, retriever, ranking
+    )
 
 
 def run_dir(experiment: str, seed: int) -> Path:

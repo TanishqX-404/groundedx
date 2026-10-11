@@ -42,6 +42,10 @@ def main() -> None:
     parser.add_argument("--mode", choices=["rag", "zero-shot", "hybrid"], required=True)
     parser.add_argument("--class-docs", action="store_true", help="add the fault reference")
     parser.add_argument("--candidates", type=int, default=3, help="hybrid: GBDT top-N")
+    parser.add_argument("--blind", action="store_true", help="hybrid: shuffled, no probabilities")
+    parser.add_argument("--data-variant", default="default", help="default|leaky|easy|mid")
+    parser.add_argument("--kb-size", default=None, help="None (8/class) or 'all'")
+    parser.add_argument("--ranking", default="raw", choices=["raw", "z"])
     parser.add_argument("--kb-variant", default="full")
     parser.add_argument("-k", type=int, default=5)
     parser.add_argument("--seeds", type=int, nargs="+", default=None)
@@ -55,8 +59,16 @@ def main() -> None:
 
     cfg = load_experiment_config()
     seeds = args.seeds or cfg["seeds"]
-    spec = CallSpec(args.mode, args.k, args.class_docs, args.candidates)
-    exp = args.experiment or experiment_name(args.model, spec, args.kb_variant, args.split)
+    spec = CallSpec(args.mode, args.k, args.class_docs, args.candidates, args.blind)
+    exp = args.experiment or experiment_name(
+        args.model,
+        spec,
+        args.kb_variant,
+        args.split,
+        data_variant=args.data_variant,
+        kb_size=args.kb_size,
+        ranking=args.ranking,
+    )
     log_dir = ROOT / "results" / "v2" / "_logs"
     log_dir.mkdir(parents=True, exist_ok=True)
     client = make_client(
@@ -69,7 +81,14 @@ def main() -> None:
     )
 
     for seed in seeds:
-        setup = prepare_seed(seed, args.kb_variant, cfg)
+        setup = prepare_seed(
+            seed,
+            args.kb_variant,
+            cfg,
+            data_variant=args.data_variant,
+            kb_size=args.kb_size,
+            ranking=args.ranking,
+        )
         samples = setup.splits[args.split]
         if args.limit:
             samples = samples[: args.limit]
@@ -85,6 +104,11 @@ def main() -> None:
             mode=args.mode,
             class_docs=args.class_docs,
             candidates=args.candidates if args.mode == "hybrid" else None,
+            blind=args.blind,
+            data_variant=args.data_variant,
+            kb_size=args.kb_size,
+            kb_docs=len(setup.documents),
+            ranking=args.ranking,
             gbdt_params=builder.gbdt_params,
             kb_variant=args.kb_variant if spec.uses_retrieval else None,
             k=args.k if spec.uses_retrieval else 0,

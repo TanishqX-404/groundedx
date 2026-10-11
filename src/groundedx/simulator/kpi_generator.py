@@ -40,7 +40,11 @@ def _noise_scale(baseline: float, noise_fraction: float) -> float:
 
 
 def simulate_window(
-    domain: DomainConfig, fault: FaultSpec, rng: np.random.Generator, steps: int = 15
+    domain: DomainConfig,
+    fault: FaultSpec,
+    rng: np.random.Generator,
+    steps: int = 15,
+    leaky_logs: bool = False,
 ) -> dict[str, Any]:
     """Generate one label-bearing synthetic window for evaluation."""
 
@@ -104,12 +108,32 @@ def simulate_window(
     logs = rng.choice(
         domain.log_templates, size=min(2, len(domain.log_templates)), replace=False
     ).tolist()
-    logs.extend(
+    deviation_lines = [
         f"{name} deviation observed with approximate delta {delta:+.2f}"
         for _, name, delta in observed[:3]
-    )
+    ]
+    logs.extend(deviation_lines)
     rng.shuffle(logs)
     n_logs = int(rng.integers(2, len(logs) + 1))
+    if leaky_logs:
+        # Label-exposed CONTROL only: the i-th observed-deviation line is replaced by
+        # the injected class's i-th nominal effect (as an earlier configuration did).
+        # Applied after all random draws, so every other field is identical.
+        nominal = sorted(fault.kpi_effects.items(), key=lambda kv: abs(float(kv[1])), reverse=True)
+        nominal_lines = [
+            f"{name} deviation observed with approximate delta {float(effect) * severity:+.2f}"
+            for name, effect in nominal[:3]
+        ]
+        swapped = []
+        for line in logs:
+            if line in deviation_lines:
+                i = deviation_lines.index(line)
+                if i < len(nominal_lines):
+                    swapped.append(nominal_lines[i])
+            else:
+                swapped.append(line)
+        logs = swapped
+        n_logs = min(n_logs, len(logs))
 
     frame = pd.DataFrame(data, index=timestamps).reset_index(names="timestamp")
     frame["window_minute"] = np.arange(steps)
@@ -131,7 +155,7 @@ def simulate_window(
 
 
 def generate_dataset(
-    domain: DomainConfig, n: int, seed: int, steps: int = 15
+    domain: DomainConfig, n: int, seed: int, steps: int = 15, leaky_logs: bool = False
 ) -> list[dict[str, Any]]:
     """Generate a reproducibly shuffled, class-balanced dataset.
 
@@ -141,7 +165,9 @@ def generate_dataset(
 
     rng = np.random.default_rng(seed)
     rows = [
-        simulate_window(domain, domain.taxonomy[index % len(domain.taxonomy)], rng, steps)
+        simulate_window(
+            domain, domain.taxonomy[index % len(domain.taxonomy)], rng, steps, leaky_logs
+        )
         for index in range(n)
     ]
     rng.shuffle(rows)

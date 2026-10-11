@@ -62,13 +62,48 @@ HYBRID_JOBS: list[dict] = [
     {"model": MAIN, "mode": "zero-shot", "docs": True},
 ]
 PROFILE_JOBS: list[dict] = [
-    {"model": m, "mode": mode} for m in CFG["generation"]["models"] for mode in ("zero-shot", "rag")
+    {"model": m, "mode": mode}
+    for m in CFG["generation"]["models"]
+    if m != "qwen2.5-7b-q4"  # does not fit the 4 GB edge budget; accuracy-only
+    for mode in ("zero-shot", "rag")
 ] + [{"model": m, "mode": "hybrid", "candidates": n} for m in (MAIN, SMALL) for n in (3, 1)]
-PHASE_JOBS = {"accuracy": ACCURACY_JOBS, "pilot": PILOT_JOBS, "hybrid": HYBRID_JOBS}
+BIG = "qwen2.5-7b-q4"
+# Review phase (supervisor's review), in priority order. All on the test split, 3 seeds.
+REVIEW_JOBS: list[dict] = [
+    # E: how much do the label channels inflate accuracy? (control conditions)
+    {"model": MAIN, "mode": "rag", "kb": "label_exposed"},
+    {"model": MAIN, "mode": "rag", "kb": "label_exposed", "data": "leaky"},
+    {"model": MAIN, "mode": "zero-shot", "data": "leaky"},
+    # D: fairness controls - full-train KB, standardized KPI selection, both
+    {"model": MAIN, "mode": "rag", "docs": True, "kbsize": "all"},
+    {"model": MAIN, "mode": "zero-shot", "docs": True, "ranking": "z"},
+    {"model": MAIN, "mode": "rag", "docs": True, "kbsize": "all", "ranking": "z"},
+    # F: reranking without position / probability cues
+    {"model": MAIN, "mode": "hybrid", "candidates": 3, "blind": True},
+    # D: a larger model
+    {"model": BIG, "mode": "zero-shot", "docs": True},
+    {"model": BIG, "mode": "rag", "docs": True},
+    # E: SLM at easier benchmark settings
+    {"model": MAIN, "mode": "zero-shot", "docs": True, "data": "easy"},
+    {"model": MAIN, "mode": "zero-shot", "docs": True, "data": "mid"},
+    {"model": BIG, "mode": "rag", "docs": True, "kbsize": "all", "ranking": "z"},
+]
+PHASE_JOBS = {
+    "accuracy": ACCURACY_JOBS,
+    "pilot": PILOT_JOBS,
+    "hybrid": HYBRID_JOBS,
+    "review": REVIEW_JOBS,
+}
 
 
 def spec_of(job: dict) -> CallSpec:
-    return CallSpec(job["mode"], job.get("k", 5), job.get("docs", False), job.get("candidates", 3))
+    return CallSpec(
+        job["mode"],
+        job.get("k", 5),
+        job.get("docs", False),
+        job.get("candidates", 3),
+        job.get("blind", False),
+    )
 
 
 def model_path(models_dir: Path, model: str) -> Path:
@@ -81,7 +116,13 @@ def _lines(path: Path) -> int:
 
 def accuracy_done(job: dict, n_expected: int = 600) -> bool:
     exp = experiment_name(
-        job["model"], spec_of(job), job.get("kb", "full"), job.get("split", "test")
+        job["model"],
+        spec_of(job),
+        job.get("kb", "full"),
+        job.get("split", "test"),
+        data_variant=job.get("data", "default"),
+        kb_size=job.get("kbsize"),
+        ranking=job.get("ranking", "raw"),
     )
     return all(
         _lines(RESULTS_ROOT / exp / f"seed_{s}" / "predictions.jsonl") >= n_expected
@@ -119,6 +160,14 @@ def command(job: dict, phase: str, models_dir: Path, gpu: str, tag: str) -> list
         cmd += ["--candidates", str(job["candidates"])]
     if job.get("docs"):
         cmd += ["--class-docs"]
+    if job.get("blind"):
+        cmd += ["--blind"]
+    if job.get("data"):
+        cmd += ["--data-variant", job["data"]]
+    if job.get("kbsize"):
+        cmd += ["--kb-size", job["kbsize"]]
+    if job.get("ranking"):
+        cmd += ["--ranking", job["ranking"]]
     if phase != "profile":
         cmd += ["--split", job.get("split", "test")]
     if phase == "profile":

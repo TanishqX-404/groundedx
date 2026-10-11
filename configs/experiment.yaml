@@ -26,6 +26,10 @@ generation:
     qwen2.5-3b-q8:
       repo: Qwen/Qwen2.5-3B-Instruct-GGUF
       file: qwen2.5-3b-instruct-q8_0.gguf
+    qwen2.5-7b-q4:
+      repo: Qwen/Qwen2.5-7B-Instruct-GGUF
+      file: qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf
+      extra_files: [qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf]
 profiling:
   warmup_calls: 5
   measured_calls: 100

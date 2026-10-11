@@ -16,6 +16,7 @@ No evaluator label of the window being diagnosed is ever used.
 from __future__ import annotations
 
 import json
+import random
 from dataclasses import dataclass
 from typing import Any
 
@@ -33,6 +34,9 @@ class CallSpec:
     k: int = 5
     class_docs: bool = False
     candidates: int = 3
+    # Hybrid only: present candidates in a per-window random order without the
+    # classifier's probabilities (controls for position / probability anchoring).
+    blind: bool = False
 
     @property
     def uses_retrieval(self) -> bool:
@@ -52,7 +56,18 @@ def describe_fault(fault: FaultSpec) -> str:
     )
 
 
-def experiment_name(model: str, spec: CallSpec, kb_variant: str, split: str) -> str:
+def experiment_name(
+    model: str,
+    spec: CallSpec,
+    kb_variant: str,
+    split: str,
+    *,
+    data_variant: str = "default",
+    kb_size: str | None = None,
+    ranking: str = "raw",
+) -> str:
+    """Directory name for a run. Defaults reproduce the original names exactly."""
+
     if spec.mode == "zero-shot":
         name = f"llm__{model}__zs"
     elif spec.mode == "rag":
@@ -61,6 +76,14 @@ def experiment_name(model: str, spec: CallSpec, kb_variant: str, split: str) -> 
         name = f"llm__{model}__hybrid{spec.candidates}__{kb_variant}__k{spec.k}"
     if spec.class_docs and spec.mode != "hybrid":
         name += "__docs"
+    if spec.blind and spec.mode == "hybrid":
+        name += "__blind"
+    if data_variant != "default":
+        name += f"__data-{data_variant}"
+    if kb_size and spec.uses_retrieval:
+        name += f"__kb{kb_size}"
+    if ranking != "raw":
+        name += f"__enc-{ranking}"
     if split != "test":
         name += f"__{split}"
     return name
@@ -80,7 +103,12 @@ class CallBuilder:
         domain_dir = ROOT / "domains" / setup.domain.name
         self.domain: DomainConfig = setup.domain
         if spec.mode == "hybrid":
-            self.template = domain_dir / "prompt_template_hybrid.jinja"
+            name = (
+                "prompt_template_hybrid_blind.jinja"
+                if spec.blind
+                else "prompt_template_hybrid.jinja"
+            )
+            self.template = domain_dir / name
         elif spec.class_docs:
             self.template = domain_dir / "prompt_template_docs.jinja"
         else:
@@ -122,7 +150,7 @@ class CallBuilder:
             self._proba[sample["id"]] = dict(zip(self._labels, map(float, row)))
 
     def build(self, sample: dict[str, Any]) -> dict[str, Any]:
-        query = encode_context(sample, self.domain)
+        query = encode_context(sample, self.domain, ranking=self.setup.ranking)
         retrieved = (
             self.setup.retriever.retrieve(query, k=self.spec.k) if self.spec.uses_retrieval else []
         )
@@ -133,9 +161,13 @@ class CallBuilder:
             proba = self._proba[sample["id"]]
             candidates = sorted(proba.items(), key=lambda item: -item[1])[: self.spec.candidates]
             classes = [name for name, _ in candidates]
-            reference = "\n".join(
-                f"- {name} (p={p:.2f}): {self.docs[name]}" for name, p in candidates
-            )
+            if self.spec.blind:
+                random.Random(sample["id"]).shuffle(classes)
+                reference = "\n".join(f"- {name}: {self.docs[name]}" for name in classes)
+            else:
+                reference = "\n".join(
+                    f"- {name} (p={p:.2f}): {self.docs[name]}" for name, p in candidates
+                )
         elif self.spec.class_docs:
             reference = "\n".join(f"- {name}: {self.docs[name]}" for name in classes)
         prompt = render_prompt(
