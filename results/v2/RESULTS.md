@@ -18,16 +18,22 @@ Values are mean ± sample std over n seeds (seeds control dataset generation, sp
 | knn_vote__full__k5 | 600,600,600 | 0.178 ± 0.012 (n=3) | 0.172 ± 0.012 (n=3) | 0.000 ± 0.000 (n=3) | - |
 | knn_vote__generic_remediation__k5 | 600,600,600 | 0.163 ± 0.013 (n=3) | 0.160 ± 0.013 (n=3) | 0.000 ± 0.000 (n=3) | - |
 | knn_vote__no_remediation__k5 | 600,600,600 | 0.161 ± 0.012 (n=3) | 0.157 ± 0.011 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| llm__qwen2.5-1.5b-q4__hybrid1__full__k5 | 600,600,600 | 0.631 ± 0.006 (n=3) | 0.622 ± 0.004 (n=3) | 0.000 ± 0.000 (n=3) | 0.804 ± 0.027 (n=3) |
+| llm__qwen2.5-1.5b-q4__hybrid3__full__k5 | 600,600,600 | 0.511 ± 0.035 (n=3) | 0.506 ± 0.035 (n=3) | 0.000 ± 0.000 (n=3) | 0.800 ± 0.030 (n=3) |
 | llm__qwen2.5-1.5b-q4__rag__full__k5 | 600,600,600 | 0.108 ± 0.009 (n=3) | 0.064 ± 0.011 (n=3) | 0.000 ± 0.000 (n=3) | 0.847 ± 0.006 (n=3) |
 | llm__qwen2.5-1.5b-q4__zs | 600,600,600 | 0.123 ± 0.011 (n=3) | 0.095 ± 0.012 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) |
 | llm__qwen2.5-1.5b-q8__rag__full__k5 | 600,600,600 | 0.083 ± 0.014 (n=3) | 0.049 ± 0.017 (n=3) | 0.000 ± 0.000 (n=3) | 0.734 ± 0.028 (n=3) |
 | llm__qwen2.5-1.5b-q8__zs | 600,600,600 | 0.116 ± 0.018 (n=3) | 0.075 ± 0.013 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) |
+| llm__qwen2.5-3b-q4__hybrid1__full__k5 | 600,600,600 | 0.631 ± 0.006 (n=3) | 0.622 ± 0.004 (n=3) | 0.000 ± 0.000 (n=3) | 0.982 ± 0.006 (n=3) |
+| llm__qwen2.5-3b-q4__hybrid3__full__k5 | 600,600,600 | 0.540 ± 0.043 (n=3) | 0.536 ± 0.040 (n=3) | 0.000 ± 0.000 (n=3) | 0.976 ± 0.003 (n=3) |
 | llm__qwen2.5-3b-q4__rag__full__k1 | 600,600,600 | 0.205 ± 0.012 (n=3) | 0.193 ± 0.011 (n=3) | 0.000 ± 0.000 (n=3) | 0.982 ± 0.014 (n=3) |
 | llm__qwen2.5-3b-q4__rag__full__k3 | 600,600,600 | 0.199 ± 0.003 (n=3) | 0.181 ± 0.004 (n=3) | 0.000 ± 0.000 (n=3) | 0.967 ± 0.009 (n=3) |
 | llm__qwen2.5-3b-q4__rag__full__k5 | 600,600,600 | 0.188 ± 0.009 (n=3) | 0.174 ± 0.011 (n=3) | 0.000 ± 0.000 (n=3) | 0.974 ± 0.008 (n=3) |
+| llm__qwen2.5-3b-q4__rag__full__k5__docs | 600,600,600 | 0.242 ± 0.015 (n=3) | 0.234 ± 0.016 (n=3) | 0.000 ± 0.000 (n=3) | 0.962 ± 0.009 (n=3) |
 | llm__qwen2.5-3b-q4__rag__generic_remediation__k5 | 600,600,600 | 0.171 ± 0.012 (n=3) | 0.154 ± 0.014 (n=3) | 0.000 ± 0.000 (n=3) | 0.937 ± 0.006 (n=3) |
 | llm__qwen2.5-3b-q4__rag__no_remediation__k5 | 600,600,600 | 0.164 ± 0.009 (n=3) | 0.148 ± 0.008 (n=3) | 0.000 ± 0.000 (n=3) | 0.961 ± 0.005 (n=3) |
 | llm__qwen2.5-3b-q4__zs | 600,600,600 | 0.188 ± 0.009 (n=3) | 0.165 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) |
+| llm__qwen2.5-3b-q4__zs__docs | 600,600,600 | 0.273 ± 0.027 (n=3) | 0.266 ± 0.020 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) |
 | llm__qwen2.5-3b-q8__rag__full__k5 | 600,600,600 | 0.168 ± 0.007 (n=3) | 0.145 ± 0.003 (n=3) | 0.000 ± 0.000 (n=3) | 0.912 ± 0.013 (n=3) |
 | llm__qwen2.5-3b-q8__zs | 600,600,600 | 0.173 ± 0.013 (n=3) | 0.156 ± 0.010 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) |
 | random_forest | 600,600,600 | 0.573 ± 0.004 (n=3) | 0.555 ± 0.006 (n=3) | 0.000 ± 0.000 (n=3) | - |
@@ -43,16 +49,22 @@ Retrieval hit = a same-class case is in the full-KB TF-IDF top-5 for that window
 | knn_vote__full__k5 | 0.196 ± 0.032 (n=3) | 0.173 ± 0.018 (n=3) | 0.232 ± 0.020 (n=3) | 0.070 ± 0.016 (n=3) | 0.054 ± 0.005 (n=3) | 0.300 ± 0.023 (n=3) | 0.377 ± 0.004 (n=3) | 0.000 ± 0.000 (n=3) |
 | knn_vote__generic_remediation__k5 | 0.183 ± 0.035 (n=3) | 0.157 ± 0.026 (n=3) | 0.221 ± 0.028 (n=3) | 0.076 ± 0.012 (n=3) | 0.063 ± 0.007 (n=3) | 0.261 ± 0.028 (n=3) | 0.344 ± 0.013 (n=3) | 0.000 ± 0.000 (n=3) |
 | knn_vote__no_remediation__k5 | 0.176 ± 0.029 (n=3) | 0.156 ± 0.022 (n=3) | 0.222 ± 0.017 (n=3) | 0.078 ± 0.013 (n=3) | 0.062 ± 0.007 (n=3) | 0.257 ± 0.023 (n=3) | 0.339 ± 0.010 (n=3) | 0.000 ± 0.000 (n=3) |
+| llm__qwen2.5-1.5b-q4__hybrid1__full__k5 | 0.725 ± 0.027 (n=3) | 0.605 ± 0.013 (n=3) | 0.748 ± 0.015 (n=3) | 0.363 ± 0.031 (n=3) | 0.455 ± 0.030 (n=3) | 0.804 ± 0.023 (n=3) | 0.710 ± 0.012 (n=3) | 0.559 ± 0.029 (n=3) |
+| llm__qwen2.5-1.5b-q4__hybrid3__full__k5 | 0.572 ± 0.049 (n=3) | 0.494 ± 0.031 (n=3) | 0.638 ± 0.008 (n=3) | 0.282 ± 0.034 (n=3) | 0.283 ± 0.027 (n=3) | 0.734 ± 0.034 (n=3) | 0.660 ± 0.045 (n=3) | 0.376 ± 0.005 (n=3) |
 | llm__qwen2.5-1.5b-q4__rag__full__k5 | 0.120 ± 0.031 (n=3) | 0.105 ± 0.015 (n=3) | 0.155 ± 0.019 (n=3) | 0.056 ± 0.006 (n=3) | 0.070 ± 0.013 (n=3) | 0.146 ± 0.006 (n=3) | 0.131 ± 0.019 (n=3) | 0.088 ± 0.013 (n=3) |
 | llm__qwen2.5-1.5b-q4__zs | 0.155 ± 0.015 (n=3) | 0.114 ± 0.015 (n=3) | 0.167 ± 0.020 (n=3) | 0.059 ± 0.008 (n=3) | 0.046 ± 0.014 (n=3) | 0.199 ± 0.008 (n=3) | 0.158 ± 0.010 (n=3) | 0.092 ± 0.008 (n=3) |
 | llm__qwen2.5-1.5b-q8__rag__full__k5 | 0.109 ± 0.015 (n=3) | 0.075 ± 0.018 (n=3) | 0.127 ± 0.008 (n=3) | 0.056 ± 0.010 (n=3) | 0.057 ± 0.015 (n=3) | 0.107 ± 0.023 (n=3) | 0.107 ± 0.016 (n=3) | 0.060 ± 0.010 (n=3) |
 | llm__qwen2.5-1.5b-q8__zs | 0.158 ± 0.023 (n=3) | 0.104 ± 0.022 (n=3) | 0.156 ± 0.031 (n=3) | 0.058 ± 0.013 (n=3) | 0.060 ± 0.023 (n=3) | 0.170 ± 0.010 (n=3) | 0.145 ± 0.021 (n=3) | 0.089 ± 0.012 (n=3) |
+| llm__qwen2.5-3b-q4__hybrid1__full__k5 | 0.725 ± 0.027 (n=3) | 0.605 ± 0.013 (n=3) | 0.748 ± 0.015 (n=3) | 0.363 ± 0.031 (n=3) | 0.455 ± 0.030 (n=3) | 0.804 ± 0.023 (n=3) | 0.710 ± 0.012 (n=3) | 0.559 ± 0.029 (n=3) |
+| llm__qwen2.5-3b-q4__hybrid3__full__k5 | 0.603 ± 0.081 (n=3) | 0.522 ± 0.036 (n=3) | 0.645 ± 0.013 (n=3) | 0.256 ± 0.031 (n=3) | 0.300 ± 0.043 (n=3) | 0.775 ± 0.046 (n=3) | 0.710 ± 0.051 (n=3) | 0.386 ± 0.030 (n=3) |
 | llm__qwen2.5-3b-q4__rag__full__k1 | 0.221 ± 0.015 (n=3) | 0.200 ± 0.014 (n=3) | 0.258 ± 0.015 (n=3) | 0.072 ± 0.007 (n=3) | 0.045 ± 0.004 (n=3) | 0.362 ± 0.020 (n=3) | 0.327 ± 0.032 (n=3) | 0.096 ± 0.010 (n=3) |
 | llm__qwen2.5-3b-q4__rag__full__k3 | 0.229 ± 0.022 (n=3) | 0.190 ± 0.003 (n=3) | 0.262 ± 0.014 (n=3) | 0.089 ± 0.013 (n=3) | 0.054 ± 0.011 (n=3) | 0.341 ± 0.001 (n=3) | 0.313 ± 0.019 (n=3) | 0.095 ± 0.020 (n=3) |
 | llm__qwen2.5-3b-q4__rag__full__k5 | 0.219 ± 0.036 (n=3) | 0.180 ± 0.002 (n=3) | 0.249 ± 0.009 (n=3) | 0.084 ± 0.012 (n=3) | 0.051 ± 0.017 (n=3) | 0.322 ± 0.009 (n=3) | 0.297 ± 0.016 (n=3) | 0.091 ± 0.015 (n=3) |
+| llm__qwen2.5-3b-q4__rag__full__k5__docs | 0.265 ± 0.005 (n=3) | 0.235 ± 0.020 (n=3) | 0.296 ± 0.019 (n=3) | 0.080 ± 0.005 (n=3) | 0.025 ± 0.010 (n=3) | 0.454 ± 0.026 (n=3) | 0.388 ± 0.011 (n=3) | 0.110 ± 0.011 (n=3) |
 | llm__qwen2.5-3b-q4__rag__generic_remediation__k5 | 0.191 ± 0.020 (n=3) | 0.166 ± 0.016 (n=3) | 0.227 ± 0.011 (n=3) | 0.074 ± 0.008 (n=3) | 0.058 ± 0.006 (n=3) | 0.282 ± 0.033 (n=3) | 0.232 ± 0.030 (n=3) | 0.118 ± 0.005 (n=3) |
 | llm__qwen2.5-3b-q4__rag__no_remediation__k5 | 0.183 ± 0.028 (n=3) | 0.159 ± 0.011 (n=3) | 0.225 ± 0.022 (n=3) | 0.078 ± 0.014 (n=3) | 0.057 ± 0.008 (n=3) | 0.270 ± 0.015 (n=3) | 0.232 ± 0.019 (n=3) | 0.104 ± 0.014 (n=3) |
 | llm__qwen2.5-3b-q4__zs | 0.206 ± 0.016 (n=3) | 0.183 ± 0.015 (n=3) | 0.254 ± 0.014 (n=3) | 0.087 ± 0.010 (n=3) | 0.054 ± 0.013 (n=3) | 0.320 ± 0.012 (n=3) | 0.248 ± 0.003 (n=3) | 0.135 ± 0.013 (n=3) |
+| llm__qwen2.5-3b-q4__zs__docs | 0.277 ± 0.017 (n=3) | 0.272 ± 0.030 (n=3) | 0.331 ± 0.017 (n=3) | 0.081 ± 0.018 (n=3) | 0.025 ± 0.003 (n=3) | 0.515 ± 0.044 (n=3) | 0.392 ± 0.031 (n=3) | 0.165 ± 0.009 (n=3) |
 | llm__qwen2.5-3b-q8__rag__full__k5 | 0.183 ± 0.035 (n=3) | 0.163 ± 0.016 (n=3) | 0.241 ± 0.022 (n=3) | 0.093 ± 0.018 (n=3) | 0.046 ± 0.018 (n=3) | 0.287 ± 0.014 (n=3) | 0.246 ± 0.022 (n=3) | 0.097 ± 0.016 (n=3) |
 | llm__qwen2.5-3b-q8__zs | 0.165 ± 0.020 (n=3) | 0.176 ± 0.019 (n=3) | 0.240 ± 0.021 (n=3) | 0.078 ± 0.004 (n=3) | 0.057 ± 0.009 (n=3) | 0.287 ± 0.026 (n=3) | 0.220 ± 0.020 (n=3) | 0.130 ± 0.023 (n=3) |
 | random_forest | 0.735 ± 0.025 (n=3) | 0.528 ± 0.006 (n=3) | 0.753 ± 0.014 (n=3) | 0.477 ± 0.036 (n=3) | 0.466 ± 0.021 (n=3) | 0.679 ± 0.031 (n=3) | 0.615 ± 0.010 (n=3) | 0.536 ± 0.005 (n=3) |
@@ -64,7 +76,11 @@ classifier top-1 = GBDT alone on the same windows; candidate recall = gold in th
 
 | experiment | windows/seed | hybrid acc | classifier top-1 | candidate recall | override rate | fixes | breaks | faithfulness |
 |---|---|---|---|---|---|---|---|---|
+| llm__qwen2.5-1.5b-q4__hybrid1__full__k5 | 600,600,600 | 0.631 ± 0.006 (n=3) | 0.631 ± 0.006 (n=3) | 0.631 ± 0.006 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.804 ± 0.027 (n=3) |
+| llm__qwen2.5-1.5b-q4__hybrid3__full__k5 | 600,600,600 | 0.511 ± 0.035 (n=3) | 0.631 ± 0.006 (n=3) | 0.875 ± 0.004 (n=3) | 0.351 ± 0.044 (n=3) | 0.062 ± 0.007 (n=3) | 0.182 ± 0.033 (n=3) | 0.800 ± 0.030 (n=3) |
 | llm__qwen2.5-1.5b-q4__hybrid3__full__k5__val | 600 | 0.527 (n=1) | 0.630 (n=1) | 0.873 (n=1) | 0.315 (n=1) | 0.050 (n=1) | 0.153 (n=1) | 0.813 (n=1) |
+| llm__qwen2.5-3b-q4__hybrid1__full__k5 | 600,600,600 | 0.631 ± 0.006 (n=3) | 0.631 ± 0.006 (n=3) | 0.631 ± 0.006 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.982 ± 0.006 (n=3) |
+| llm__qwen2.5-3b-q4__hybrid3__full__k5 | 600,600,600 | 0.540 ± 0.043 (n=3) | 0.631 ± 0.006 (n=3) | 0.875 ± 0.004 (n=3) | 0.308 ± 0.059 (n=3) | 0.059 ± 0.008 (n=3) | 0.150 ± 0.048 (n=3) | 0.976 ± 0.003 (n=3) |
 | llm__qwen2.5-3b-q4__hybrid3__full__k5__val | 600 | 0.575 (n=1) | 0.630 (n=1) | 0.873 (n=1) | 0.283 (n=1) | 0.063 (n=1) | 0.118 (n=1) | 0.975 (n=1) |
 
 ## Validation-split pilots (not test results)
@@ -80,16 +96,22 @@ classifier top-1 = GBDT alone on the same windows; candidate recall = gold in th
 
 | experiment | truncated | parse_error | schema_error | out_of_taxonomy | bad_citation | mean #citations |
 |---|---|---|---|---|---|---|
+| llm__qwen2.5-1.5b-q4__hybrid1__full__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.40 ± 0.07 (n=3) |
+| llm__qwen2.5-1.5b-q4__hybrid3__full__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.07 ± 0.01 (n=3) |
 | llm__qwen2.5-1.5b-q4__rag__full__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.59 ± 0.09 (n=3) |
 | llm__qwen2.5-1.5b-q4__zs | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.00 ± 0.00 (n=3) |
 | llm__qwen2.5-1.5b-q8__rag__full__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.38 ± 0.04 (n=3) |
 | llm__qwen2.5-1.5b-q8__zs | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.00 ± 0.00 (n=3) |
+| llm__qwen2.5-3b-q4__hybrid1__full__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.41 ± 0.05 (n=3) |
+| llm__qwen2.5-3b-q4__hybrid3__full__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.34 ± 0.06 (n=3) |
 | llm__qwen2.5-3b-q4__rag__full__k1 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.14 ± 0.02 (n=3) |
 | llm__qwen2.5-3b-q4__rag__full__k3 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.52 ± 0.04 (n=3) |
 | llm__qwen2.5-3b-q4__rag__full__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.65 ± 0.10 (n=3) |
+| llm__qwen2.5-3b-q4__rag__full__k5__docs | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.65 ± 0.07 (n=3) |
 | llm__qwen2.5-3b-q4__rag__generic_remediation__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 2.23 ± 0.06 (n=3) |
 | llm__qwen2.5-3b-q4__rag__no_remediation__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 2.40 ± 0.12 (n=3) |
 | llm__qwen2.5-3b-q4__zs | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.00 ± 0.00 (n=3) |
+| llm__qwen2.5-3b-q4__zs__docs | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.00 ± 0.00 (n=3) |
 | llm__qwen2.5-3b-q8__rag__full__k5 | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 1.95 ± 0.03 (n=3) |
 | llm__qwen2.5-3b-q8__zs | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) | 0.00 ± 0.00 (n=3) |
 
@@ -222,4 +244,67 @@ classifier top-1 = GBDT alone on the same windows; candidate recall = gold in th
 | profile__qwen2.5-3b-q8__rag__t4 | Tesla T4, 580.178.04, 15360 MiB | 100 | 3128 ± 32 (n=3) | 3772 ± 12 (n=3) | 0 ± 0 (n=3) | 4.13 ± 0.00 (n=3) | 3.66 ± 0.00 (n=3) | 65.56 ± 0.16 (n=3) | 208.57 ± 1.18 (n=3) |
 | profile__qwen2.5-3b-q8__zs__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU, 566.07, 4096 MiB | 100 | 2986 ± 54 (n=3) | 3434 ± 61 (n=3) | 0 ± 0 (n=3) | 4.11 ± 0.00 (n=3) | 3.48 ± 0.00 (n=3) | 39.33 ± 0.07 (n=3) | 117.68 ± 1.20 (n=3) |
 | profile__qwen2.5-3b-q8__zs__t4 | Tesla T4, 580.178.04, 15360 MiB | 100 | 2404 ± 36 (n=3) | 2765 ± 36 (n=3) | 0 ± 0 (n=3) | 4.13 ± 0.00 (n=3) | 3.66 ± 0.00 (n=3) | 66.10 ± 0.15 (n=3) | 159.29 ± 1.82 (n=3) |
+
+## Provenance (from each run's manifest.json)
+
+Hybrid runs train their own GBDT (same validation-selected hyper-parameters) on the machine that runs them, so 'classifier top-1' in the hybrid table can differ slightly from the `gbdt` baseline row when the XGBoost build differs.
+
+| experiment | GPU | OS | xgboost | llama-server | commit |
+|---|---|---|---|---|---|
+| dataset | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| gbdt | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| knn_vote__full__k5 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| knn_vote__generic_remediation__k5 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| knn_vote__no_remediation__k5 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| llm__qwen2.5-1.5b-q4__hybrid1__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 0004403 |
+| llm__qwen2.5-1.5b-q4__hybrid3__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 0004403 |
+| llm__qwen2.5-1.5b-q4__hybrid3__full__k5__val | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 3671332 |
+| llm__qwen2.5-1.5b-q4__rag__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-1.5b-q4__zs | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-1.5b-q8__rag__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-1.5b-q8__zs | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-3b-q4__hybrid1__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 0004403 |
+| llm__qwen2.5-3b-q4__hybrid3__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 0004403 |
+| llm__qwen2.5-3b-q4__hybrid3__full__k5__val | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 3671332 |
+| llm__qwen2.5-3b-q4__rag__full__k1 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-3b-q4__rag__full__k3 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-3b-q4__rag__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-3b-q4__rag__full__k5__docs | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 0004403 |
+| llm__qwen2.5-3b-q4__rag__full__k5__docs__val | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 3671332 |
+| llm__qwen2.5-3b-q4__rag__generic_remediation__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-3b-q4__rag__no_remediation__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-3b-q4__zs | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-3b-q4__zs__docs | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 0004403 |
+| llm__qwen2.5-3b-q4__zs__docs__val | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 3671332 |
+| llm__qwen2.5-3b-q8__rag__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| llm__qwen2.5-3b-q8__zs | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| profile__qwen2.5-1.5b-q4__hybrid1__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | 3671332 |
+| profile__qwen2.5-1.5b-q4__hybrid1__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 833805f |
+| profile__qwen2.5-1.5b-q4__hybrid3__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | 3671332 |
+| profile__qwen2.5-1.5b-q4__hybrid3__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 833805f |
+| profile__qwen2.5-1.5b-q4__rag__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | e615e5e |
+| profile__qwen2.5-1.5b-q4__rag__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| profile__qwen2.5-1.5b-q4__zs__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | e615e5e |
+| profile__qwen2.5-1.5b-q4__zs__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| profile__qwen2.5-1.5b-q8__rag__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | e615e5e |
+| profile__qwen2.5-1.5b-q8__rag__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| profile__qwen2.5-1.5b-q8__zs__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | e615e5e |
+| profile__qwen2.5-1.5b-q8__zs__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| profile__qwen2.5-3b-q4__hybrid1__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | 3671332 |
+| profile__qwen2.5-3b-q4__hybrid1__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 833805f |
+| profile__qwen2.5-3b-q4__hybrid3__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | 3671332 |
+| profile__qwen2.5-3b-q4__hybrid3__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 833805f |
+| profile__qwen2.5-3b-q4__rag__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | 3671332, 6a64108 |
+| profile__qwen2.5-3b-q4__rag__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| profile__qwen2.5-3b-q4__zs__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | e615e5e |
+| profile__qwen2.5-3b-q4__zs__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| profile__qwen2.5-3b-q8__rag__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | 3671332 |
+| profile__qwen2.5-3b-q8__rag__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| profile__qwen2.5-3b-q8__zs__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | 3671332 |
+| profile__qwen2.5-3b-q8__zs__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
+| random_forest | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| retrieval__full | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| retrieval__generic_remediation | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| retrieval__no_remediation | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| rule | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
 

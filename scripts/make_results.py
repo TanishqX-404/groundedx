@@ -470,6 +470,37 @@ def main() -> None:
             )
         md.append("")
 
+    # ---------------- provenance (from manifests) ----------------
+    prov = []
+    for exp_dir in sorted(
+        p for p in RESULTS_ROOT.iterdir() if p.is_dir() and not p.name.startswith("_")
+    ):
+        mans = [json.loads(m.read_text()) for m in sorted(exp_dir.glob("seed_*/manifest.json"))]
+        if not mans:
+            continue
+
+        def distinct(key, sub=None):
+            vals = {str((m.get(sub) or {}).get(key) if sub else m.get(key)) for m in mans}
+            return ", ".join(sorted(vals))
+
+        gpus = {(m.get("gpus") or ["CPU"])[0].split(",")[0] for m in mans}
+        prov.append(
+            f"| {exp_dir.name} | {', '.join(sorted(gpus))} | {distinct('platform').split('-')[0]} | "
+            f"{distinct('xgboost', 'package_versions')} | {distinct('llama_server_build')} | "
+            f"{', '.join(sorted({str(m.get('git_commit'))[:7] for m in mans}))} |"
+        )
+    md += [
+        "## Provenance (from each run's manifest.json)",
+        "",
+        "Hybrid runs train their own GBDT (same validation-selected hyper-parameters) on the machine that runs them, "
+        "so 'classifier top-1' in the hybrid table can differ slightly from the `gbdt` baseline row when the XGBoost build differs.",
+        "",
+        "| experiment | GPU | OS | xgboost | llama-server | commit |",
+        "|---|---|---|---|---|---|",
+        *prov,
+        "",
+    ]
+
     (RESULTS_ROOT / "RESULTS.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     (RESULTS_ROOT / "numbers.json").write_text(
         json.dumps(NUMBERS, indent=1, sort_keys=True), encoding="utf-8"
