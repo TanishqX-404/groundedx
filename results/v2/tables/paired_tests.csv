@@ -11,3 +11,13 @@ kNN full vs no-remediation KB,knn_vote__full__k5,knn_vote__no_remediation__k5,18
 GBDT (frozen) vs RandomForest,gbdt_frozen,random_forest,1800,0.6311111111111111,0.5733333333333334,220,116,1.485418184412736e-08
 GBDT (frozen) vs 3B hybrid top-3,gbdt_frozen,llm__qwen2.5-3b-q4__hybrid3__full__k5,1800,0.6311111111111111,0.54,270,106,1.278651092264521e-17
 GBDT (frozen) vs 1.5B hybrid top-3,gbdt_frozen,llm__qwen2.5-1.5b-q4__hybrid3__full__k5,1800,0.6311111111111111,0.5111111111111111,327,111,8.851619998789003e-26
+3B hybrid top-3 blind vs top-3,llm__qwen2.5-3b-q4__hybrid3__full__k5__blind,llm__qwen2.5-3b-q4__hybrid3__full__k5,1800,0.45444444444444443,0.54,85,239,4.323842957314514e-18
+GBDT (frozen) vs 3B hybrid top-3 blind,gbdt_frozen,llm__qwen2.5-3b-q4__hybrid3__full__k5__blind,1800,0.6311111111111111,0.45444444444444443,472,154,1.868086453996043e-38
+3B RAG label-exposed KB vs controlled,llm__qwen2.5-3b-q4__rag__label_exposed__k5,llm__qwen2.5-3b-q4__rag__full__k5,1800,0.3333333333333333,0.18833333333333332,343,82,4.985086822367633e-39
+3B zero-shot leaky logs vs controlled,llm__qwen2.5-3b-q4__zs__data-leaky,llm__qwen2.5-3b-q4__zs,1800,0.24833333333333332,0.18833333333333332,151,43,2.8201087412722155e-15
+3B RAG+docs KB-all vs KB-128,llm__qwen2.5-3b-q4__rag__full__k5__docs__kball,llm__qwen2.5-3b-q4__rag__full__k5__docs,1800,0.26222222222222225,0.24166666666666667,177,140,0.0430103901769989
+3B zero-shot+docs z-ranking vs raw,llm__qwen2.5-3b-q4__zs__docs__enc-z,llm__qwen2.5-3b-q4__zs__docs,1800,0.2727777777777778,0.2727777777777778,52,52,1.0
+3B RAG+docs KB-all+z vs KB-128 raw,llm__qwen2.5-3b-q4__rag__full__k5__docs__kball__enc-z,llm__qwen2.5-3b-q4__rag__full__k5__docs,1800,0.2511111111111111,0.24166666666666667,169,152,0.3718652214764275
+7B zero-shot+docs vs 3B,llm__qwen2.5-7b-q4__zs__docs,llm__qwen2.5-3b-q4__zs__docs,1800,0.3233333333333333,0.2727777777777778,156,65,8.212098176064671e-10
+7B RAG+docs vs 3B,llm__qwen2.5-7b-q4__rag__full__k5__docs,llm__qwen2.5-3b-q4__rag__full__k5__docs,1800,0.26611111111111113,0.24166666666666667,153,109,0.007774361420625656
+GBDT (frozen) vs 7B RAG+docs KB-all+z,gbdt_frozen,llm__qwen2.5-7b-q4__rag__full__k5__docs__kball__enc-z,1800,0.6311111111111111,0.285,711,88,6.760130745341593e-122
