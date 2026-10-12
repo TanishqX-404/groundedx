@@ -2,13 +2,16 @@
 
 Varies the window-level probabilities that set benchmark difficulty and records
 rule / RandomForest / GBDT accuracy and TF-IDF retrieval Recall@5 / kNN-vote
-accuracy, 3 seeds per grid point. GBDT hyper-parameters are re-selected on each
-point's validation split. Writes results/v2/tables/difficulty_sweep_per_seed.csv.
+accuracy, 3 seeds per grid point. For tractability the GBDT reuses, per seed, the
+hyper-parameters selected on the default benchmark's validation split
+(results/v2/gbdt/seed_<s>/manifest.json); this is a sensitivity analysis, not a
+tuned comparison. Writes results/v2/tables/difficulty_sweep_per_seed.csv.
 """
 
 from __future__ import annotations
 
 import itertools
+import json
 import sys
 from pathlib import Path
 
@@ -21,8 +24,6 @@ sys.path.insert(0, str(ROOT / "src"))
 from groundedx.baselines.knn_vote import knn_vote  # noqa: E402
 from groundedx.baselines.random_forest import (  # noqa: E402
     extract_features,
-    predict_gbdt,
-    train_gbdt,
     train_random_forest,
 )
 from groundedx.baselines.rule_based import rule_based_predict  # noqa: E402
@@ -41,6 +42,20 @@ SEEDS = [7, 19, 41]
 
 def acc(pred, gold) -> float:
     return float(np.mean([p == g for p, g in zip(pred, gold)]))
+
+
+def fixed_gbdt(train, test, dom, seed, params) -> list[str]:
+    from xgboost import XGBClassifier
+
+    x_tr, y_tr = extract_features(train, dom)
+    x_te, _ = extract_features(test, dom)
+    labels = sorted(dom.classes)
+    idx = {c: i for i, c in enumerate(labels)}
+    model = XGBClassifier(random_state=seed, n_jobs=-1, tree_method="hist", **params)
+    model.fit(x_tr, np.array([idx[y] for y in y_tr]))
+    return [
+        labels[int(i)] for i in model.predict(x_te.reindex(columns=x_tr.columns, fill_value=0.0))
+    ]
 
 
 def main() -> None:
@@ -63,7 +78,10 @@ def main() -> None:
             x_tr, _ = extract_features(train, dom)
             x_te, _ = extract_features(test, dom)
             rf_pred = rf.predict(x_te.reindex(columns=x_tr.columns, fill_value=0.0))
-            gbdt, best, _ = train_gbdt(train, val, dom, seed)
+            best = json.loads(
+                (ROOT / "results" / "v2" / "gbdt" / f"seed_{seed}" / "manifest.json").read_text()
+            )["selected"]
+            gbdt_pred = fixed_gbdt(train, test, dom, seed, best)
             kb = select_kb_cases(train, 8, seed)
             docs = build_documents(kb, dom)
             labels = make_scoring_labels(kb, [d["chunk_id"] for d in docs])
@@ -80,7 +98,7 @@ def main() -> None:
                     "seed": seed,
                     "rule": acc([rule_based_predict(s, dom) for s in test], gold),
                     "random_forest": acc(rf_pred, gold),
-                    "gbdt": acc(predict_gbdt(gbdt, test, dom), gold),
+                    "gbdt": acc(gbdt_pred, gold),
                     "knn_vote": acc([knn_vote(rs, labels) for rs in retrieved], gold),
                     "recall_at_5": float(recall5),
                     "gbdt_params": str(best),
