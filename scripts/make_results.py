@@ -223,6 +223,11 @@ PAIRED_TESTS = [
         f"{M3}__rag__label_exposed__k5",
         f"{M3}__rag__full__k5",
     ),
+    (
+        "3B RAG label-exposed KB + leaky logs vs controlled",
+        f"{M3}__rag__label_exposed__k5__data-leaky",
+        f"{M3}__rag__full__k5",
+    ),
     ("3B zero-shot leaky logs vs controlled", f"{M3}__zs__data-leaky", f"{M3}__zs"),
     (
         "3B RAG+docs KB-all vs KB-128",
@@ -237,6 +242,7 @@ PAIRED_TESTS = [
     ),
     ("7B zero-shot+docs vs 3B", f"{M7}__zs__docs", f"{M3}__zs__docs"),
     ("7B RAG+docs vs 3B", f"{M7}__rag__full__k5__docs", f"{M3}__rag__full__k5__docs"),
+    ("7B zero-shot+docs vs RAG+docs", f"{M7}__zs__docs", f"{M7}__rag__full__k5__docs"),
     (
         "GBDT (frozen) vs 7B RAG+docs KB-all+z",
         "gbdt_frozen",

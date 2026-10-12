@@ -387,12 +387,14 @@ n10 = windows only A gets right; n01 = windows only B gets right.
 | 3B hybrid top-3 blind vs top-3 | 0.454 | 0.540 | 85 / 239 | 4.3e-18 |
 | GBDT (frozen) vs 3B hybrid top-3 blind | 0.631 | 0.454 | 472 / 154 | 1.9e-38 |
 | 3B RAG label-exposed KB vs controlled | 0.333 | 0.188 | 343 / 82 | 5e-39 |
+| 3B RAG label-exposed KB + leaky logs vs controlled | 0.364 | 0.188 | 396 / 80 | 2.5e-51 |
 | 3B zero-shot leaky logs vs controlled | 0.248 | 0.188 | 151 / 43 | 2.8e-15 |
 | 3B RAG+docs KB-all vs KB-128 | 0.262 | 0.242 | 177 / 140 | 0.043 |
 | 3B zero-shot+docs z-ranking vs raw | 0.273 | 0.273 | 52 / 52 | 1 |
 | 3B RAG+docs KB-all+z vs KB-128 raw | 0.251 | 0.242 | 169 / 152 | 0.37 |
 | 7B zero-shot+docs vs 3B | 0.323 | 0.273 | 156 / 65 | 8.2e-10 |
 | 7B RAG+docs vs 3B | 0.266 | 0.242 | 153 / 109 | 0.0078 |
+| 7B zero-shot+docs vs RAG+docs | 0.323 | 0.266 | 207 / 104 | 5.3e-09 |
 | GBDT (frozen) vs 7B RAG+docs KB-all+z | 0.631 | 0.285 | 711 / 88 | 6.8e-122 |
 
 ## Explanation checks (scripts/explanation_checks.py; evaluator-side)
