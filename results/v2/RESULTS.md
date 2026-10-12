@@ -15,9 +15,20 @@ Values are mean ± sample std over n seeds (seeds control dataset generation, sp
 | experiment | windows/seed | accuracy | macro-F1 | invalid rate | faithfulness |
 |---|---|---|---|---|---|
 | gbdt | 600,600,600 | 0.637 ± 0.005 (n=3) | 0.628 ± 0.003 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| gbdt__data-easy | 600,600,600 | 0.872 ± 0.005 (n=3) | 0.870 ± 0.006 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| gbdt__data-leaky | 600,600,600 | 0.762 ± 0.025 (n=3) | 0.762 ± 0.025 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| gbdt__data-mid | 600,600,600 | 0.753 ± 0.019 (n=3) | 0.752 ± 0.019 (n=3) | 0.000 ± 0.000 (n=3) | - |
 | gbdt_frozen | 600,600,600 | 0.631 ± 0.006 (n=3) | 0.622 ± 0.004 (n=3) | 0.000 ± 0.000 (n=3) | - |
 | knn_vote__full__k5 | 600,600,600 | 0.178 ± 0.012 (n=3) | 0.172 ± 0.012 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| knn_vote__full__k5__data-easy | 600,600,600 | 0.486 ± 0.014 (n=3) | 0.480 ± 0.012 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| knn_vote__full__k5__data-leaky | 600,600,600 | 0.319 ± 0.016 (n=3) | 0.314 ± 0.016 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| knn_vote__full__k5__data-mid | 600,600,600 | 0.286 ± 0.011 (n=3) | 0.279 ± 0.011 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| knn_vote__full__k5__enc-z | 600,600,600 | 0.195 ± 0.023 (n=3) | 0.191 ± 0.025 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| knn_vote__full__k5__kball | 600,600,600 | 0.229 ± 0.017 (n=3) | 0.229 ± 0.018 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| knn_vote__full__k5__kball__enc-z | 600,600,600 | 0.229 ± 0.013 (n=3) | 0.226 ± 0.011 (n=3) | 0.000 ± 0.000 (n=3) | - |
 | knn_vote__generic_remediation__k5 | 600,600,600 | 0.163 ± 0.013 (n=3) | 0.160 ± 0.013 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| knn_vote__label_exposed__k5 | 600,600,600 | 0.288 ± 0.018 (n=3) | 0.284 ± 0.018 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| knn_vote__label_exposed__k5__data-leaky | 600,600,600 | 0.369 ± 0.014 (n=3) | 0.365 ± 0.015 (n=3) | 0.000 ± 0.000 (n=3) | - |
 | knn_vote__no_remediation__k5 | 600,600,600 | 0.161 ± 0.012 (n=3) | 0.157 ± 0.011 (n=3) | 0.000 ± 0.000 (n=3) | - |
 | llm__qwen2.5-1.5b-q4__hybrid1__full__k5 | 600,600,600 | 0.631 ± 0.006 (n=3) | 0.622 ± 0.004 (n=3) | 0.000 ± 0.000 (n=3) | 0.804 ± 0.027 (n=3) |
 | llm__qwen2.5-1.5b-q4__hybrid3__full__k5 | 600,600,600 | 0.511 ± 0.035 (n=3) | 0.506 ± 0.035 (n=3) | 0.000 ± 0.000 (n=3) | 0.800 ± 0.030 (n=3) |
@@ -38,9 +49,13 @@ Values are mean ± sample std over n seeds (seeds control dataset generation, sp
 | llm__qwen2.5-3b-q8__rag__full__k5 | 600,600,600 | 0.168 ± 0.007 (n=3) | 0.145 ± 0.003 (n=3) | 0.000 ± 0.000 (n=3) | 0.912 ± 0.013 (n=3) |
 | llm__qwen2.5-3b-q8__zs | 600,600,600 | 0.173 ± 0.013 (n=3) | 0.156 ± 0.010 (n=3) | 0.000 ± 0.000 (n=3) | 0.000 ± 0.000 (n=3) |
 | random_forest | 600,600,600 | 0.573 ± 0.004 (n=3) | 0.555 ± 0.006 (n=3) | 0.000 ± 0.000 (n=3) | - |
-| random_forest__data-leaky | 600 | 0.700 (n=1) | 0.699 (n=1) | 0.000 (n=1) | - |
+| random_forest__data-easy | 600,600,600 | 0.849 ± 0.005 (n=3) | 0.846 ± 0.004 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| random_forest__data-leaky | 600,600,600 | 0.721 ± 0.019 (n=3) | 0.716 ± 0.018 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| random_forest__data-mid | 600,600,600 | 0.711 ± 0.009 (n=3) | 0.702 ± 0.010 (n=3) | 0.000 ± 0.000 (n=3) | - |
 | rule | 600,600,600 | 0.323 ± 0.018 (n=3) | 0.312 ± 0.015 (n=3) | 0.000 ± 0.000 (n=3) | - |
-| rule__data-leaky | 600 | 0.310 (n=1) | 0.302 (n=1) | 0.000 (n=1) | - |
+| rule__data-easy | 600,600,600 | 0.701 ± 0.015 (n=3) | 0.702 ± 0.013 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| rule__data-leaky | 600,600,600 | 0.323 ± 0.018 (n=3) | 0.312 ± 0.015 (n=3) | 0.000 ± 0.000 (n=3) | - |
+| rule__data-mid | 600,600,600 | 0.483 ± 0.022 (n=3) | 0.484 ± 0.021 (n=3) | 0.000 ± 0.000 (n=3) | - |
 
 ## E4 multi-fault / E8 alarm-absent / E6 retrieval-conditioned accuracy
 
@@ -49,9 +64,20 @@ Retrieval hit = a same-class case is in the full-KB TF-IDF top-5 for that window
 | experiment | clean | blended | blended: primary OR secondary | wrong(blended)=secondary | alarm absent | alarm present | retrieval hit | retrieval miss |
 |---|---|---|---|---|---|---|---|---|
 | gbdt | 0.733 ± 0.016 (n=3) | 0.611 ± 0.012 (n=3) | 0.755 ± 0.026 (n=3) | 0.371 ± 0.058 (n=3) | 0.466 ± 0.031 (n=3) | 0.806 ± 0.028 (n=3) | 0.708 ± 0.014 (n=3) | 0.573 ± 0.027 (n=3) |
+| gbdt__data-easy | 0.881 ± 0.010 (n=3) | 0.852 ± 0.009 (n=3) | 0.896 ± 0.013 (n=3) | 0.300 ± 0.091 (n=3) | 0.444 ± 0.068 (n=3) | 0.917 ± 0.009 (n=3) | 0.865 ± 0.007 (n=3) | 0.879 ± 0.009 (n=3) |
+| gbdt__data-leaky | 0.824 ± 0.061 (n=3) | 0.745 ± 0.016 (n=3) | 0.819 ± 0.015 (n=3) | 0.289 ± 0.045 (n=3) | 0.653 ± 0.028 (n=3) | 0.870 ± 0.019 (n=3) | 0.804 ± 0.039 (n=3) | 0.724 ± 0.007 (n=3) |
+| gbdt__data-mid | 0.787 ± 0.024 (n=3) | 0.726 ± 0.020 (n=3) | 0.830 ± 0.027 (n=3) | 0.382 ± 0.081 (n=3) | 0.474 ± 0.020 (n=3) | 0.879 ± 0.022 (n=3) | 0.753 ± 0.043 (n=3) | 0.753 ± 0.003 (n=3) |
 | gbdt_frozen | 0.725 ± 0.027 (n=3) | 0.605 ± 0.013 (n=3) | 0.748 ± 0.015 (n=3) | 0.363 ± 0.031 (n=3) | 0.455 ± 0.030 (n=3) | 0.804 ± 0.023 (n=3) | 0.710 ± 0.012 (n=3) | 0.559 ± 0.029 (n=3) |
 | knn_vote__full__k5 | 0.196 ± 0.032 (n=3) | 0.173 ± 0.018 (n=3) | 0.232 ± 0.020 (n=3) | 0.070 ± 0.016 (n=3) | 0.054 ± 0.005 (n=3) | 0.300 ± 0.023 (n=3) | 0.377 ± 0.004 (n=3) | 0.000 ± 0.000 (n=3) |
+| knn_vote__full__k5__data-easy | 0.478 ± 0.007 (n=3) | 0.506 ± 0.031 (n=3) | 0.534 ± 0.036 (n=3) | 0.057 ± 0.024 (n=3) | 0.082 ± 0.042 (n=3) | 0.529 ± 0.019 (n=3) | 0.481 ± 0.013 (n=3) | 0.489 ± 0.039 (n=3) |
+| knn_vote__full__k5__data-leaky | 0.333 ± 0.020 (n=3) | 0.315 ± 0.024 (n=3) | 0.361 ± 0.024 (n=3) | 0.067 ± 0.013 (n=3) | 0.158 ± 0.020 (n=3) | 0.477 ± 0.017 (n=3) | 0.557 ± 0.032 (n=3) | 0.105 ± 0.003 (n=3) |
+| knn_vote__full__k5__data-mid | 0.292 ± 0.031 (n=3) | 0.281 ± 0.022 (n=3) | 0.330 ± 0.021 (n=3) | 0.069 ± 0.018 (n=3) | 0.058 ± 0.027 (n=3) | 0.388 ± 0.024 (n=3) | 0.286 ± 0.017 (n=3) | 0.285 ± 0.008 (n=3) |
+| knn_vote__full__k5__enc-z | 0.214 ± 0.032 (n=3) | 0.190 ± 0.021 (n=3) | 0.253 ± 0.020 (n=3) | 0.078 ± 0.008 (n=3) | 0.070 ± 0.004 (n=3) | 0.317 ± 0.044 (n=3) | 0.369 ± 0.021 (n=3) | 0.038 ± 0.004 (n=3) |
+| knn_vote__full__k5__kball | 0.242 ± 0.040 (n=3) | 0.226 ± 0.010 (n=3) | 0.289 ± 0.019 (n=3) | 0.081 ± 0.012 (n=3) | 0.053 ± 0.008 (n=3) | 0.403 ± 0.029 (n=3) | 0.341 ± 0.032 (n=3) | 0.130 ± 0.009 (n=3) |
+| knn_vote__full__k5__kball__enc-z | 0.219 ± 0.022 (n=3) | 0.232 ± 0.015 (n=3) | 0.304 ± 0.026 (n=3) | 0.094 ± 0.017 (n=3) | 0.083 ± 0.013 (n=3) | 0.373 ± 0.017 (n=3) | 0.339 ± 0.045 (n=3) | 0.132 ± 0.008 (n=3) |
 | knn_vote__generic_remediation__k5 | 0.183 ± 0.035 (n=3) | 0.157 ± 0.026 (n=3) | 0.221 ± 0.028 (n=3) | 0.076 ± 0.012 (n=3) | 0.063 ± 0.007 (n=3) | 0.261 ± 0.028 (n=3) | 0.344 ± 0.013 (n=3) | 0.000 ± 0.000 (n=3) |
+| knn_vote__label_exposed__k5 | 0.303 ± 0.048 (n=3) | 0.284 ± 0.017 (n=3) | 0.338 ± 0.018 (n=3) | 0.075 ± 0.005 (n=3) | 0.040 ± 0.007 (n=3) | 0.530 ± 0.032 (n=3) | 0.525 ± 0.015 (n=3) | 0.073 ± 0.012 (n=3) |
+| knn_vote__label_exposed__k5__data-leaky | 0.374 ± 0.044 (n=3) | 0.367 ± 0.012 (n=3) | 0.417 ± 0.013 (n=3) | 0.078 ± 0.015 (n=3) | 0.112 ± 0.008 (n=3) | 0.620 ± 0.012 (n=3) | 0.618 ± 0.006 (n=3) | 0.144 ± 0.012 (n=3) |
 | knn_vote__no_remediation__k5 | 0.176 ± 0.029 (n=3) | 0.156 ± 0.022 (n=3) | 0.222 ± 0.017 (n=3) | 0.078 ± 0.013 (n=3) | 0.062 ± 0.007 (n=3) | 0.257 ± 0.023 (n=3) | 0.339 ± 0.010 (n=3) | 0.000 ± 0.000 (n=3) |
 | llm__qwen2.5-1.5b-q4__hybrid1__full__k5 | 0.725 ± 0.027 (n=3) | 0.605 ± 0.013 (n=3) | 0.748 ± 0.015 (n=3) | 0.363 ± 0.031 (n=3) | 0.455 ± 0.030 (n=3) | 0.804 ± 0.023 (n=3) | 0.710 ± 0.012 (n=3) | 0.559 ± 0.029 (n=3) |
 | llm__qwen2.5-1.5b-q4__hybrid3__full__k5 | 0.572 ± 0.049 (n=3) | 0.494 ± 0.031 (n=3) | 0.638 ± 0.008 (n=3) | 0.282 ± 0.034 (n=3) | 0.283 ± 0.027 (n=3) | 0.734 ± 0.034 (n=3) | 0.660 ± 0.045 (n=3) | 0.376 ± 0.005 (n=3) |
@@ -72,9 +98,13 @@ Retrieval hit = a same-class case is in the full-KB TF-IDF top-5 for that window
 | llm__qwen2.5-3b-q8__rag__full__k5 | 0.183 ± 0.035 (n=3) | 0.163 ± 0.016 (n=3) | 0.241 ± 0.022 (n=3) | 0.093 ± 0.018 (n=3) | 0.046 ± 0.018 (n=3) | 0.287 ± 0.014 (n=3) | 0.246 ± 0.022 (n=3) | 0.097 ± 0.016 (n=3) |
 | llm__qwen2.5-3b-q8__zs | 0.165 ± 0.020 (n=3) | 0.176 ± 0.019 (n=3) | 0.240 ± 0.021 (n=3) | 0.078 ± 0.004 (n=3) | 0.057 ± 0.009 (n=3) | 0.287 ± 0.026 (n=3) | 0.220 ± 0.020 (n=3) | 0.130 ± 0.023 (n=3) |
 | random_forest | 0.735 ± 0.025 (n=3) | 0.528 ± 0.006 (n=3) | 0.753 ± 0.014 (n=3) | 0.477 ± 0.036 (n=3) | 0.466 ± 0.021 (n=3) | 0.679 ± 0.031 (n=3) | 0.615 ± 0.010 (n=3) | 0.536 ± 0.005 (n=3) |
-| random_forest__data-leaky | 0.817 (n=1) | 0.667 (n=1) | 0.780 (n=1) | 0.340 (n=1) | 0.607 (n=1) | 0.797 (n=1) | 0.721 (n=1) | 0.682 (n=1) |
+| random_forest__data-easy | 0.890 ± 0.005 (n=3) | 0.753 ± 0.014 (n=3) | 0.877 ± 0.036 (n=3) | 0.506 ± 0.122 (n=3) | 0.555 ± 0.050 (n=3) | 0.880 ± 0.007 (n=3) | 0.852 ± 0.020 (n=3) | 0.847 ± 0.007 (n=3) |
+| random_forest__data-leaky | 0.811 ± 0.047 (n=3) | 0.696 ± 0.025 (n=3) | 0.811 ± 0.031 (n=3) | 0.381 ± 0.058 (n=3) | 0.656 ± 0.043 (n=3) | 0.786 ± 0.015 (n=3) | 0.753 ± 0.029 (n=3) | 0.692 ± 0.009 (n=3) |
+| random_forest__data-mid | 0.832 ± 0.030 (n=3) | 0.610 ± 0.017 (n=3) | 0.802 ± 0.029 (n=3) | 0.492 ± 0.071 (n=3) | 0.523 ± 0.020 (n=3) | 0.795 ± 0.010 (n=3) | 0.714 ± 0.036 (n=3) | 0.707 ± 0.017 (n=3) |
 | rule | 0.318 ± 0.030 (n=3) | 0.324 ± 0.020 (n=3) | 0.365 ± 0.022 (n=3) | 0.060 ± 0.005 (n=3) | 0.014 ± 0.007 (n=3) | 0.626 ± 0.016 (n=3) | 0.466 ± 0.026 (n=3) | 0.193 ± 0.010 (n=3) |
-| rule__data-leaky | 0.328 (n=1) | 0.305 (n=1) | 0.343 (n=1) | 0.055 (n=1) | 0.007 (n=1) | 0.624 (n=1) | 0.446 (n=1) | 0.194 (n=1) |
+| rule__data-easy | 0.700 ± 0.030 (n=3) | 0.702 ± 0.029 (n=3) | 0.715 ± 0.030 (n=3) | 0.043 ± 0.040 (n=3) | 0.024 ± 0.012 (n=3) | 0.773 ± 0.004 (n=3) | 0.689 ± 0.022 (n=3) | 0.712 ± 0.014 (n=3) |
+| rule__data-leaky | 0.318 ± 0.030 (n=3) | 0.324 ± 0.020 (n=3) | 0.365 ± 0.022 (n=3) | 0.060 ± 0.005 (n=3) | 0.014 ± 0.007 (n=3) | 0.626 ± 0.016 (n=3) | 0.466 ± 0.026 (n=3) | 0.193 ± 0.010 (n=3) |
+| rule__data-mid | 0.468 ± 0.006 (n=3) | 0.496 ± 0.041 (n=3) | 0.529 ± 0.042 (n=3) | 0.067 ± 0.017 (n=3) | 0.028 ± 0.020 (n=3) | 0.688 ± 0.025 (n=3) | 0.463 ± 0.008 (n=3) | 0.499 ± 0.049 (n=3) |
 
 ## Hybrid (GBDT top-N candidates -> SLM choice + grounded explanation)
 
@@ -213,10 +243,42 @@ classifier top-1 = GBDT alone on the same windows; candidate recall = gold in th
 | full | 3 | 0.342 ± 0.030 (n=3) | 0.236 ± 0.023 (n=3) |
 | full | 5 | 0.473 ± 0.037 (n=3) | 0.265 ± 0.024 (n=3) |
 | full | 10 | 0.684 ± 0.024 (n=3) | 0.293 ± 0.023 (n=3) |
+| full__data-easy | 1 | 0.389 ± 0.032 (n=3) | 0.389 ± 0.032 (n=3) |
+| full__data-easy | 3 | 0.657 ± 0.025 (n=3) | 0.505 ± 0.023 (n=3) |
+| full__data-easy | 5 | 0.770 ± 0.012 (n=3) | 0.531 ± 0.022 (n=3) |
+| full__data-easy | 10 | 0.900 ± 0.009 (n=3) | 0.549 ± 0.020 (n=3) |
+| full__data-leaky | 1 | 0.271 ± 0.021 (n=3) | 0.271 ± 0.021 (n=3) |
+| full__data-leaky | 3 | 0.499 ± 0.030 (n=3) | 0.369 ± 0.023 (n=3) |
+| full__data-leaky | 5 | 0.629 ± 0.041 (n=3) | 0.398 ± 0.023 (n=3) |
+| full__data-leaky | 10 | 0.814 ± 0.021 (n=3) | 0.422 ± 0.020 (n=3) |
+| full__data-mid | 1 | 0.243 ± 0.015 (n=3) | 0.243 ± 0.015 (n=3) |
+| full__data-mid | 3 | 0.456 ± 0.007 (n=3) | 0.335 ± 0.011 (n=3) |
+| full__data-mid | 5 | 0.583 ± 0.003 (n=3) | 0.364 ± 0.010 (n=3) |
+| full__data-mid | 10 | 0.748 ± 0.012 (n=3) | 0.387 ± 0.010 (n=3) |
+| full__enc-z | 1 | 0.158 ± 0.010 (n=3) | 0.158 ± 0.010 (n=3) |
+| full__enc-z | 3 | 0.360 ± 0.026 (n=3) | 0.245 ± 0.018 (n=3) |
+| full__enc-z | 5 | 0.488 ± 0.018 (n=3) | 0.274 ± 0.016 (n=3) |
+| full__enc-z | 10 | 0.694 ± 0.022 (n=3) | 0.302 ± 0.016 (n=3) |
+| full__kball | 1 | 0.182 ± 0.015 (n=3) | 0.182 ± 0.015 (n=3) |
+| full__kball | 3 | 0.375 ± 0.040 (n=3) | 0.266 ± 0.028 (n=3) |
+| full__kball | 5 | 0.499 ± 0.029 (n=3) | 0.294 ± 0.026 (n=3) |
+| full__kball | 10 | 0.679 ± 0.033 (n=3) | 0.318 ± 0.027 (n=3) |
+| full__kball__enc-z | 1 | 0.170 ± 0.009 (n=3) | 0.170 ± 0.009 (n=3) |
+| full__kball__enc-z | 3 | 0.385 ± 0.023 (n=3) | 0.261 ± 0.015 (n=3) |
+| full__kball__enc-z | 5 | 0.508 ± 0.024 (n=3) | 0.290 ± 0.016 (n=3) |
+| full__kball__enc-z | 10 | 0.689 ± 0.034 (n=3) | 0.314 ± 0.017 (n=3) |
 | generic_remediation | 1 | 0.144 ± 0.021 (n=3) | 0.144 ± 0.021 (n=3) |
 | generic_remediation | 3 | 0.333 ± 0.016 (n=3) | 0.224 ± 0.019 (n=3) |
 | generic_remediation | 5 | 0.464 ± 0.031 (n=3) | 0.254 ± 0.022 (n=3) |
 | generic_remediation | 10 | 0.677 ± 0.033 (n=3) | 0.282 ± 0.023 (n=3) |
+| label_exposed | 1 | 0.299 ± 0.027 (n=3) | 0.299 ± 0.027 (n=3) |
+| label_exposed | 3 | 0.529 ± 0.023 (n=3) | 0.400 ± 0.025 (n=3) |
+| label_exposed | 5 | 0.622 ± 0.010 (n=3) | 0.421 ± 0.023 (n=3) |
+| label_exposed | 10 | 0.759 ± 0.012 (n=3) | 0.439 ± 0.023 (n=3) |
+| label_exposed__data-leaky | 1 | 0.366 ± 0.027 (n=3) | 0.366 ± 0.027 (n=3) |
+| label_exposed__data-leaky | 3 | 0.601 ± 0.024 (n=3) | 0.468 ± 0.026 (n=3) |
+| label_exposed__data-leaky | 5 | 0.703 ± 0.022 (n=3) | 0.492 ± 0.025 (n=3) |
+| label_exposed__data-leaky | 10 | 0.854 ± 0.021 (n=3) | 0.512 ± 0.025 (n=3) |
 | no_remediation | 1 | 0.145 ± 0.020 (n=3) | 0.145 ± 0.020 (n=3) |
 | no_remediation | 3 | 0.333 ± 0.018 (n=3) | 0.224 ± 0.020 (n=3) |
 | no_remediation | 5 | 0.459 ± 0.034 (n=3) | 0.253 ± 0.023 (n=3) |
@@ -314,9 +376,20 @@ Hybrid runs train their own GBDT (same validation-selected hyper-parameters) on 
 |---|---|---|---|---|---|
 | dataset | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
 | gbdt | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| gbdt__data-easy | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| gbdt__data-leaky | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 2ebe455, 3e85976 |
+| gbdt__data-mid | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
 | gbdt_frozen | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 2ebe455 |
 | knn_vote__full__k5 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| knn_vote__full__k5__data-easy | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976, 45a8168 |
+| knn_vote__full__k5__data-leaky | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| knn_vote__full__k5__data-mid | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976, 45a8168 |
+| knn_vote__full__k5__enc-z | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| knn_vote__full__k5__kball | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| knn_vote__full__k5__kball__enc-z | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976, 45a8168 |
 | knn_vote__generic_remediation__k5 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| knn_vote__label_exposed__k5 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| knn_vote__label_exposed__k5__data-leaky | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
 | knn_vote__no_remediation__k5 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
 | llm__qwen2.5-1.5b-q4__hybrid1__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 0004403 |
 | llm__qwen2.5-1.5b-q4__hybrid3__full__k5 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 0004403 |
@@ -365,10 +438,22 @@ Hybrid runs train their own GBDT (same validation-selected hyper-parameters) on 
 | profile__qwen2.5-3b-q8__zs__rtx3050 | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | b11398-a7b94df2c | 3671332 |
 | profile__qwen2.5-3b-q8__zs__t4 | Tesla T4 | Linux | 3.4.1 | b1-a7b94df | 009c018 |
 | random_forest | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
-| random_forest__data-leaky | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 2ebe455 |
+| random_forest__data-easy | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| random_forest__data-leaky | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 2ebe455, 3e85976 |
+| random_forest__data-mid | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
 | retrieval__full | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| retrieval__full__data-easy | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976, 45a8168 |
+| retrieval__full__data-leaky | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| retrieval__full__data-mid | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976, 45a8168 |
+| retrieval__full__enc-z | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| retrieval__full__kball | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| retrieval__full__kball__enc-z | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976, 45a8168 |
 | retrieval__generic_remediation | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
+| retrieval__label_exposed | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
+| retrieval__label_exposed__data-leaky | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
 | retrieval__no_remediation | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
 | rule | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | cd7b51e |
-| rule__data-leaky | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 2ebe455 |
+| rule__data-easy | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 2ebe455, 3e85976 |
+| rule__data-leaky | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 2ebe455, 3e85976 |
+| rule__data-mid | NVIDIA GeForce RTX 3050 Laptop GPU | Windows | 3.2.0 | None | 3e85976 |
 

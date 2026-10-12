@@ -1,0 +1,13 @@
+comparison,a,b,n,acc_a,acc_b,n10,n01,p_value
+3B RAG vs zero-shot,llm__qwen2.5-3b-q4__rag__full__k5,llm__qwen2.5-3b-q4__zs,1800,0.18833333333333332,0.18833333333333332,152,152,1.0
+3B zero-shot+docs vs zero-shot,llm__qwen2.5-3b-q4__zs__docs,llm__qwen2.5-3b-q4__zs,1800,0.2727777777777778,0.18833333333333332,274,122,1.548008185213896e-14
+3B zero-shot+docs vs RAG+docs,llm__qwen2.5-3b-q4__zs__docs,llm__qwen2.5-3b-q4__rag__full__k5__docs,1800,0.2727777777777778,0.24166666666666667,172,116,0.0011543085226030758
+3B RAG k=1 vs k=5,llm__qwen2.5-3b-q4__rag__full__k1,llm__qwen2.5-3b-q4__rag__full__k5,1800,0.205,0.18833333333333332,136,106,0.06207143757479168
+3B RAG k=3 vs k=5,llm__qwen2.5-3b-q4__rag__full__k3,llm__qwen2.5-3b-q4__rag__full__k5,1800,0.1988888888888889,0.18833333333333332,95,76,0.16848371748885838
+3B RAG full vs no-remediation KB,llm__qwen2.5-3b-q4__rag__full__k5,llm__qwen2.5-3b-q4__rag__no_remediation__k5,1800,0.18833333333333332,0.16444444444444445,119,76,0.0025428237256968048
+3B RAG full vs generic-remediation KB,llm__qwen2.5-3b-q4__rag__full__k5,llm__qwen2.5-3b-q4__rag__generic_remediation__k5,1800,0.18833333333333332,0.1711111111111111,110,79,0.02882825031214215
+kNN full vs no-remediation KB,knn_vote__full__k5,knn_vote__no_remediation__k5,1800,0.17833333333333334,0.16055555555555556,59,27,0.0007317100653124087
+3B RAG vs kNN-vote,llm__qwen2.5-3b-q4__rag__full__k5,knn_vote__full__k5,1800,0.18833333333333332,0.17833333333333334,199,181,0.38318923053993015
+GBDT (frozen) vs RandomForest,gbdt_frozen,random_forest,1800,0.6311111111111111,0.5733333333333334,220,116,1.485418184412736e-08
+GBDT (frozen) vs 3B hybrid top-3,gbdt_frozen,llm__qwen2.5-3b-q4__hybrid3__full__k5,1800,0.6311111111111111,0.54,270,106,1.278651092264521e-17
+GBDT (frozen) vs 1.5B hybrid top-3,gbdt_frozen,llm__qwen2.5-1.5b-q4__hybrid3__full__k5,1800,0.6311111111111111,0.5111111111111111,327,111,8.851619998789003e-26

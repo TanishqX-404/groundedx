@@ -1,0 +1,27 @@
+{
+  "git_commit": "3e859768b4b28b45bc13fd2be46ad6b67da6f5df",
+  "command": "python.exe scripts\\run_review_baselines.py",
+  "seed": 7,
+  "timestamp_utc": "2026-10-11T19:22:48.866875+00:00",
+  "python": "3.10.11",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "package_versions": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "sklearn": "1.7.2",
+    "xgboost": "3.2.0",
+    "llama_cpp": "0.3.2",
+    "pynvml": null
+  },
+  "gpus": [
+    "NVIDIA GeForce RTX 3050 Laptop GPU, 566.07, 4096 MiB"
+  ],
+  "cuda_version": "12.7",
+  "max_k": 10,
+  "kb_variant": "label_exposed",
+  "data_variant": "leaky",
+  "kb_size": null,
+  "ranking": "raw",
+  "k": 5,
+  "n_kb_docs": 144
+}

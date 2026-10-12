@@ -1,0 +1,77 @@
+{
+  "git_commit": "3e859768b4b28b45bc13fd2be46ad6b67da6f5df",
+  "command": "python.exe scripts\\run_review_baselines.py",
+  "seed": 41,
+  "timestamp_utc": "2026-10-11T19:35:56.082871+00:00",
+  "python": "3.10.11",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "package_versions": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "sklearn": "1.7.2",
+    "xgboost": "3.2.0",
+    "llama_cpp": "0.3.2",
+    "pynvml": null
+  },
+  "gpus": [
+    "NVIDIA GeForce RTX 3050 Laptop GPU, 566.07, 4096 MiB"
+  ],
+  "cuda_version": "12.7",
+  "n_windows": 600,
+  "data_variant": "easy",
+  "selected": {
+    "max_depth": 3,
+    "n_estimators": 200,
+    "learning_rate": 0.05
+  },
+  "val_grid": [
+    {
+      "max_depth": 3,
+      "n_estimators": 200,
+      "learning_rate": 0.05,
+      "val_accuracy": 0.8883333333333333
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 200,
+      "learning_rate": 0.1,
+      "val_accuracy": 0.8883333333333333
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 400,
+      "learning_rate": 0.05,
+      "val_accuracy": 0.8866666666666667
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 400,
+      "learning_rate": 0.1,
+      "val_accuracy": 0.875
+    },
+    {
+      "max_depth": 6,
+      "n_estimators": 200,
+      "learning_rate": 0.05,
+      "val_accuracy": 0.8716666666666667
+    },
+    {
+      "max_depth": 6,
+      "n_estimators": 200,
+      "learning_rate": 0.1,
+      "val_accuracy": 0.87
+    },
+    {
+      "max_depth": 6,
+      "n_estimators": 400,
+      "learning_rate": 0.05,
+      "val_accuracy": 0.87
+    },
+    {
+      "max_depth": 6,
+      "n_estimators": 400,
+      "learning_rate": 0.1,
+      "val_accuracy": 0.875
+    }
+  ]
+}
