@@ -1,0 +1,51 @@
+audit_id,q1_consistent,q2_evidence_supports,q3_remediation_fits,q4_useful,notes
+A01,P,Y,Y,P,claims all listed KPIs consistent with hardware degradation but rsrp_dbm rose; omits the matching RRU alarm
+A02,P,N,Y,N,asserts a step temporal pattern not observable in the summary; ignores ALM-BH-LATENCY
+A03,N,N,Y,N,says throughput increased (it fell -11.65); cited case is a cooling case
+A04,Y,N,Y,N,ALM-DNS-FAIL and two cited DNS cases contradict the interference decision without comment
+A05,Y,P,Y,P,latency and packet loss up correctly stated; cited case has packet-loss alarm but interference remediation
+A06,Y,P,Y,N,correctly says rsrp/throughput/availability increased but calls that consistent with a signature where they decrease
+A07,Y,P,Y,P,
+A08,Y,Y,Y,Y,mentions matching ALM-UL-INTERFERENCE; cited interference case with SINR-LOW
+A09,P,N,Y,P,claims all KPIs consistent with cooling failure although availability rose and cpu fell; cited cases are timing cases
+A10,P,Y,Y,Y,correct alarms; asserts spike temporal pattern without support
+A11,Y,N,Y,N,ignores ALM-TEMP-HIGH
+A12,Y,N,Y,P,cpu and latency values correct; ALM-SLICE-SLA and cited slice case point elsewhere
+A13,Y,P,Y,Y,quotes observation verbatim; ECPRI alarm supports class
+A14,P,N,Y,N,unsupported spike claim; PCI alarm and PCI-remediated cited case contradict decision
+A15,P,N,Y,N,unsupported spike claim; cited cooling case matches the TEMP-HIGH alarm not the decision
+A16,N,N,Y,N,names an ALM-PCI alarm absent from the window
+A17,Y,Y,Y,Y,
+A18,Y,P,Y,P,
+A19,Y,N,Y,Y,correct alarm-based reasoning; none of five cited cases is a PCI case
+A20,Y,Y,Y,P,
+A21,Y,N,Y,P,
+A22,Y,P,Y,N,generic; no handover KPIs present
+A23,P,Y,Y,P,asserts step pattern
+A24,Y,N,Y,N,all directions correct but nothing supports the handover decision
+A25,P,N,Y,Y,asserts step pattern; none of five cited cases is a PCI case
+A26,Y,N,Y,P,
+A27,Y,N,Y,P,
+A28,P,N,Y,N,asserts step change
+A29,Y,Y,Y,Y,
+A30,Y,N,Y,P,
+A31,Y,N,Y,N,generic; text degenerates ("root-1")
+A32,P,P,Y,Y,says latency delta negative (it is +4.90); alarms correct
+A33,Y,N,Y,N,
+A34,Y,P,Y,P,
+A35,Y,Y,Y,P,
+A36,Y,Y,Y,P,
+A37,P,P,Y,Y,asserts spike pattern
+A38,Y,Y,Y,Y,
+A39,Y,Y,Y,Y,
+A40,Y,N,Y,N,
+A41,N,N,Y,N,claims packet loss up and throughput down; packet loss fell and throughput is absent
+A42,P,N,Y,N,asserts step pattern
+A43,Y,P,Y,N,
+A44,N,N,Y,N,invents values (availability 75.00) and a latency increase (latency fell)
+A45,N,N,Y,N,restates the class signature (HO failures up and setup down) opposite to the observation
+A46,P,N,Y,N,asserts step pattern
+A47,P,Y,Y,P,garbled number ("from 44.61 to 44.61")
+A48,Y,Y,Y,P,
+A49,Y,Y,Y,Y,
+A50,P,N,Y,P,uses a cited case's values as the window's starting values

@@ -424,6 +424,25 @@ grounded = 3-condition lexical metric; ctrl_generic / ctrl_shuffled = the same m
 | llm__qwen2.5-7b-q4__rag__full__k5__docs | 0.996 ± 0.001 (n=3) | 1.000 ± 0.000 (n=3) | 0.992 ± 0.002 (n=3) | 0.680 ± 0.012 (n=3) | 0.424 ± 0.017 (n=3) | 0.989 ± 0.002 (n=3) | 0.266 ± 0.033 (n=3) | 0.811 ± 0.024 (n=3) | 0.086 ± 0.004 (n=3) | 0.731 ± 0.034 (n=3) |
 | llm__qwen2.5-7b-q4__rag__full__k5__docs__kball__enc-z | 0.989 ± 0.007 (n=3) | 1.000 ± 0.000 (n=3) | 0.973 ± 0.009 (n=3) | 0.646 ± 0.004 (n=3) | 0.407 ± 0.019 (n=3) | 0.988 ± 0.004 (n=3) | 0.285 ± 0.026 (n=3) | 0.819 ± 0.003 (n=3) | 0.057 ± 0.011 (n=3) | 0.709 ± 0.023 (n=3) |
 
+## Explanation audit (50 items, 3B-Q4 top-1 hybrid; share of Y / P / N)
+
+Explanations cut off by the 240-character bound: 0.98
+
+| rater | subset | n | question | Y | P | N |
+|---|---|---|---|---|---|---|
+| rater_llm | all | 50 | q1_consistent | 0.60 | 0.30 | 0.10 |
+| rater_llm | all | 50 | q2_evidence_supports | 0.28 | 0.20 | 0.52 |
+| rater_llm | all | 50 | q3_remediation_fits | 1.00 | 0.00 | 0.00 |
+| rater_llm | all | 50 | q4_useful | 0.24 | 0.36 | 0.40 |
+| rater_llm | correct | 25 | q1_consistent | 0.64 | 0.28 | 0.08 |
+| rater_llm | correct | 25 | q2_evidence_supports | 0.36 | 0.24 | 0.40 |
+| rater_llm | correct | 25 | q3_remediation_fits | 1.00 | 0.00 | 0.00 |
+| rater_llm | correct | 25 | q4_useful | 0.48 | 0.24 | 0.28 |
+| rater_llm | wrong | 25 | q1_consistent | 0.56 | 0.32 | 0.12 |
+| rater_llm | wrong | 25 | q2_evidence_supports | 0.20 | 0.16 | 0.64 |
+| rater_llm | wrong | 25 | q3_remediation_fits | 1.00 | 0.00 | 0.00 |
+| rater_llm | wrong | 25 | q4_useful | 0.00 | 0.48 | 0.52 |
+
 ## Difficulty sweep (classical baselines + retrieval; extra-alarm probability 0.82)
 
 | P(own alarm) | P(blend) | seeds | rule | random_forest | gbdt | knn_vote | recall_at_5 |

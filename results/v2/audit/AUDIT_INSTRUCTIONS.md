@@ -15,5 +15,7 @@ Fill each question column with Y, N or P (partly):
 - q4_useful: Would this explanation help an operator decide whether to trust
   the predicted class?
 
-Rate independently (two raters if possible: copy the sheet, one per rater).
+Rate independently (two raters if possible: copy the sheet, one per rater,
+and save it as `ratings_<name>.csv` in this folder; then run
+`python scripts/summarize_audit.py` and `python scripts/make_results.py`).
 Write any remarks in `notes`.

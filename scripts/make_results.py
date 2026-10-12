@@ -658,6 +658,29 @@ def main() -> None:
             md.append(f"| {exp} | " + " | ".join(cells) + " |")
         md.append("")
 
+    # ---------------- explanation audit (scripts/summarize_audit.py) ----------------
+    audit_csv = out_tables / "audit_summary.csv"
+    if audit_csv.exists():
+        au = pd.read_csv(audit_csv)
+        md += [
+            "## Explanation audit (50 items, 3B-Q4 top-1 hybrid; share of Y / P / N)",
+            "",
+            f"Explanations cut off by the 240-character bound: "
+            f"{au['explanations_truncated'].iloc[0]:.2f}",
+            "",
+            "| rater | subset | n | question | Y | P | N |",
+            "|---|---|---|---|---|---|---|",
+        ]
+        for r in au.itertuples():
+            for col in ("Y", "P", "N"):
+                NUMBERS[f"audit.{r.rater}.{r.subset}.{r.question}.{col}"] = getattr(r, col)
+            md.append(
+                f"| {r.rater} | {r.subset} | {r.n} | {r.question} | "
+                f"{r.Y:.2f} | {r.P:.2f} | {r.N:.2f} |"
+            )
+        NUMBERS["audit.explanations_truncated"] = float(au["explanations_truncated"].iloc[0])
+        md.append("")
+
     # ---------------- difficulty sweep ----------------
     sweep_csv = out_tables / "difficulty_sweep_per_seed.csv"
     if sweep_csv.exists():

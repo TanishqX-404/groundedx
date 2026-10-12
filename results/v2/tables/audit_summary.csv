@@ -1,0 +1,13 @@
+rater,subset,question,n,Y,P,N,explanations_truncated
+rater_llm,all,q1_consistent,50,0.6,0.3,0.1,0.98
+rater_llm,all,q2_evidence_supports,50,0.28,0.2,0.52,0.98
+rater_llm,all,q3_remediation_fits,50,1.0,0.0,0.0,0.98
+rater_llm,all,q4_useful,50,0.24,0.36,0.4,0.98
+rater_llm,correct,q1_consistent,25,0.64,0.28,0.08,0.98
+rater_llm,correct,q2_evidence_supports,25,0.36,0.24,0.4,0.98
+rater_llm,correct,q3_remediation_fits,25,1.0,0.0,0.0,0.98
+rater_llm,correct,q4_useful,25,0.48,0.24,0.28,0.98
+rater_llm,wrong,q1_consistent,25,0.56,0.32,0.12,0.98
+rater_llm,wrong,q2_evidence_supports,25,0.2,0.16,0.64,0.98
+rater_llm,wrong,q3_remediation_fits,25,1.0,0.0,0.0,0.98
+rater_llm,wrong,q4_useful,25,0.0,0.48,0.52,0.98
