@@ -72,7 +72,7 @@ def main() -> None:
         )
         for seed in SEEDS:
             splits = split_dataset(generate_dataset(dom, 4000, seed))
-            train, val, test = splits["train"], splits["val"], splits["test"]
+            train, test = splits["train"], splits["test"]
             gold = [s["fault_class"] for s in test]
             rf = train_random_forest(train, dom, seed)
             x_tr, _ = extract_features(train, dom)
